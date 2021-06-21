@@ -26,7 +26,7 @@ function Get-SecurityPolicy {
         [System.Uri] $Context,
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
-        [ValidatePattern('[\w=-]+')]
+        [ValidatePattern('[\w\.=-]+')]
         [String] $Token,
 
         [Parameter(HelpMessage = 'Portal application ID')]

@@ -26,7 +26,7 @@ function Test-PortalToken {
         [System.Uri] $Context,
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
-        [ValidatePattern('[\w=-]+')]
+        [ValidatePattern('[\w\.=-]+')]
         [String] $Token
     )
     Process {
