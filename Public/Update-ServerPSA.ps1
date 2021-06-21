@@ -4,8 +4,8 @@ function Update-ServerPSA {
         Update ArcGIS Server PSA Account
     .DESCRIPTION
         Update ArcGIS Server PSA Account
-    .PARAMETER BaseUri
-        ArcGIS Server base URI (a.k.a., context)
+    .PARAMETER Context
+        ArcGIS Server context (e.g., https://arcgis.com/arcgis)
     .PARAMETER Credential
         PSCredential object containing current username and password
     .PARAMETER NewPassowrd
@@ -23,8 +23,8 @@ function Update-ServerPSA {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Server base URI (a.k.a., context)')]
-        [ValidatePattern('^https://[\w\.\-]+(/[\w]+)?$')]
-        [System.Uri] $BaseUri,
+        [ValidatePattern('^https://[\w\/\.-]+[^/]$')]
+        [System.Uri] $Context,
 
         [Parameter(Mandatory, HelpMessage = 'PSCredential object containing current username and password')]
         [System.Management.Automation.PSCredential] $Credential,
@@ -41,11 +41,11 @@ function Update-ServerPSA {
     }
     Process {
         # GET TOKEN
-        $token = Get-ServerToken -URL ($server['token'] -f $BaseUri) -Credential $Credential
+        $token = Get-ServerToken -URL ($server['token'] -f $Context) -Credential $Credential
 
         # CHECK USER STATUS
         $restParams = @{
-            Uri     = $server['user'] -f $BaseUri
+            Uri     = $server['user'] -f $Context
             Method  = 'POST'
             Headers = @{ Referer = 'referer-value' }
             Body    = @{ f = 'pjson'; token = $token.token }
@@ -55,7 +55,7 @@ function Update-ServerPSA {
         if ( $status.disabled -eq $false ) {
             # CHANGE PASSWORD
             $restParams = @{
-                Uri     = $server['update'] -f $BaseUri
+                Uri     = $server['update'] -f $Context
                 Method  = 'POST'
                 Headers = @{ Referer = 'referer-value' }
                 Body    = @{
@@ -68,10 +68,10 @@ function Update-ServerPSA {
             $rotate = Invoke-RestMethod @restParams
 
             if ( $rotate.status -eq 'success' ) { [pscustomobject] @{ Success = $true } }
-            else { Throw ('Error updating user password for app [{0}]' -f ($server['user'] -f $BaseUri)) }
+            else { Throw ('Error updating user password for app [{0}]' -f ($server['user'] -f $Context)) }
         }
         else {
-            Throw ('Error retrieving user for app [{0}]' -f ($server['user'] -f $BaseUri))
+            Throw ('Error retrieving user for app [{0}]' -f ($server['user'] -f $Context))
         }
     }
 }

@@ -4,8 +4,8 @@ function Update-PortalPSA {
         Update Portal for ArcGIS PSA Account
     .DESCRIPTION
         Update Portal for ArcGIS PSA Account
-    .PARAMETER BaseUri
-        Portal base URI (a.k.a., context)
+    .PARAMETER Context
+        Portal context (e.g., https://arcgis.com/arcgis)
     .PARAMETER Credential
         PSCredential object containing current username and password
     .PARAMETER NewPassowrd
@@ -23,8 +23,8 @@ function Update-PortalPSA {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Portal base URI (a.k.a., context)')]
-        [ValidatePattern('^https://[\w\.\-]+(/[\w]+)?$')]
-        [System.Uri] $BaseUri,
+        [ValidatePattern('^https://[\w\/\.-]+[^/]$')]
+        [System.Uri] $Context,
 
         [Parameter(Mandatory, HelpMessage = 'PSCredential object containing current username and password')]
         [System.Management.Automation.PSCredential] $Credential,
@@ -41,10 +41,10 @@ function Update-PortalPSA {
     }
     Process {
         # GET TOKEN
-        $token = Get-PortalToken -URL ($portal['token'] -f $BaseUri) -Credential $Credential
+        $token = Get-PortalToken -URL ($portal['token'] -f $Context) -Credential $Credential
 
         $restParams = @{
-            Uri    = $portal['user'] -f $BaseUri, $Credential.GetNetworkCredential().UserName
+            Uri    = $portal['user'] -f $Context, $Credential.GetNetworkCredential().UserName
             Method = 'POST'
             Body   = @{ f = 'pjson'; token = $token.token }
         }
@@ -53,7 +53,7 @@ function Update-PortalPSA {
         if ( $status.role -eq 'org_admin' ) {
             # CHANGE PASSWORD
             $restParams = @{
-                Uri    = $portal['update'] -f $BaseUri, $Credential.GetNetworkCredential().UserName
+                Uri    = $portal['update'] -f $Context, $Credential.GetNetworkCredential().UserName
                 Method = 'POST'
                 Body   = @{
                     f        = 'pjson'
@@ -73,7 +73,7 @@ function Update-PortalPSA {
             }
         }
         else {
-            Throw ('Error retrieving user for app [{0}]' -f ($portal['user'] -f $BaseUri))
+            Throw ('Error retrieving user for app [{0}]' -f ($portal['user'] -f $Context))
         }
     }
 }
