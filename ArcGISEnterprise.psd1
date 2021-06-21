@@ -71,7 +71,9 @@
         'Get-PortalToken'
         'Get-SecurityPolicy'
         'Get-ServerToken'
+        'Test-PortalHealth'
         'Test-PortalToken'
+        'Test-ServerHealth'
         'Update-PortalPSA'
         'Update-ServerPSA'
     )
