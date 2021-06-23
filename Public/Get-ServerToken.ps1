@@ -4,12 +4,14 @@ function Get-ServerToken {
         Generate token
     .DESCRIPTION
         Generate token for ArcGIS Server
-    .PARAMETER URL
-        Target ArcGIS Server URL
+    .PARAMETER Context
+        Portal context (e.g., https://arcgis.com/arcgis)
     .PARAMETER Credential
         PowerShell credential object containing username and password
     .PARAMETER Expiration
         Token expiration time in minutes
+    .PARAMETER NonAdmin
+        Use the non-Admin URL to generate the token
     .INPUTS
         None.
     .OUTPUTS
@@ -25,9 +27,8 @@ function Get-ServerToken {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal URL')]
-        [ValidateNotNullOrEmpty()]
-        [ValidateScript( { $_.AbsoluteUri -match 'https://[\w\/\.-]+admin\/generateToken' })]
-        [System.Uri] $URL,
+        [ValidatePattern('^https://[\w\/\.-]+[^/]$')]
+        [System.Uri] $Context,
 
         [Parameter(Mandatory, HelpMessage = 'PS Credential object containing un and pw')]
         [ValidateNotNullOrEmpty()]
@@ -35,13 +36,20 @@ function Get-ServerToken {
 
         [Parameter(HelpMessage = 'Token expiration time in minutes')]
         [ValidateRange(1, 900)]
-        [int] $Expiration = 60
+        [int] $Expiration = 60,
+
+        [Parameter(HelpMessage = 'Use a non-Admin URL')]
+        [switch] $NonAdmin
     )
 
     Process {
+
+        $serverUri = '{0}/admin/generateToken' -f $Context
+        if ( $PSBoundParameters.ContainsKey('NonAdmin') ) { $serverUri = '{0}/tokens/generateToken' -f $Context }
+
         $restParams = @{
-            Uri    = $URL.AbsoluteUri
-            Method = "POST"
+            Uri    = $serverUri
+            Method = 'POST'
             Body   = @{
                 username   = $Credential.UserName
                 password   = $Credential.GetNetworkCredential().password

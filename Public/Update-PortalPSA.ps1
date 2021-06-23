@@ -32,28 +32,18 @@ function Update-PortalPSA {
         [Parameter(Mandatory, HelpMessage = 'PSCredential object containing new password')]
         [System.Management.Automation.PSCredential] $NewPassword
     )
-    Begin {
-        $portal = @{
-            token  = '{0}/sharing/rest/generateToken'
-            user   = '{0}/sharing/rest/community/users/{1}'
-            update = '{0}/sharing/rest/community/users/{1}/update'
-        }
-    }
+
     Process {
         # GET TOKEN
-        $token = Get-PortalToken -URL ($portal['token'] -f $Context) -Credential $Credential
+        $token = Get-PortalToken -URL $Context -Credential $Credential
 
-        $restParams = @{
-            Uri    = $portal['user'] -f $Context, $Credential.GetNetworkCredential().UserName
-            Method = 'POST'
-            Body   = @{ f = 'pjson'; token = $token.token }
-        }
-        $status = Invoke-RestMethod @restParams
+        $username = $Credential.GetNetworkCredential().UserName
+        $status = Get-PortalUser -Context $Context -Username $username -Token $token.token
 
         if ( $status.role -eq 'org_admin' ) {
             # CHANGE PASSWORD
             $restParams = @{
-                Uri    = $portal['update'] -f $Context, $Credential.GetNetworkCredential().UserName
+                Uri    = '{0}/sharing/rest/community/users/{1}/update' -f $Context, $username
                 Method = 'POST'
                 Body   = @{
                     f        = 'pjson'
@@ -73,7 +63,7 @@ function Update-PortalPSA {
             }
         }
         else {
-            Throw ('Error retrieving user for app [{0}]' -f ($portal['user'] -f $Context))
+            Throw ('Error retrieving user for app [{0}]' -f $Context)
         }
     }
 }

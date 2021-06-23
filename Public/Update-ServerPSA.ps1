@@ -32,30 +32,18 @@ function Update-ServerPSA {
         [Parameter(Mandatory, HelpMessage = 'PSCredential object containing new password')]
         [System.Management.Automation.PSCredential] $NewPassword
     )
-    Begin {
-        $server = @{
-            token  = '{0}/admin/generateToken'
-            user   = '{0}/admin/security/psa'
-            update = '{0}/admin/security/psa/update'
-        }
-    }
+
     Process {
         # GET TOKEN
-        $token = Get-ServerToken -URL ($server['token'] -f $Context) -Credential $Credential
+        $token = Get-ServerToken -URL $Context -Credential $Credential
 
         # CHECK USER STATUS
-        $restParams = @{
-            Uri     = $server['user'] -f $Context
-            Method  = 'POST'
-            Headers = @{ Referer = 'referer-value' }
-            Body    = @{ f = 'pjson'; token = $token.token }
-        }
-        $status = Invoke-RestMethod @restParams
+        $status = Get-ServerPSA -Context $Context -Token $token.token
 
         if ( $status.disabled -eq $false ) {
             # CHANGE PASSWORD
             $restParams = @{
-                Uri     = $server['update'] -f $Context
+                Uri     = '{0}/admin/security/psa/update' -f $Context
                 Method  = 'POST'
                 Headers = @{ Referer = 'referer-value' }
                 Body    = @{
@@ -68,10 +56,10 @@ function Update-ServerPSA {
             $rotate = Invoke-RestMethod @restParams
 
             if ( $rotate.status -eq 'success' ) { [pscustomobject] @{ Success = $true } }
-            else { Throw ('Error updating user password for app [{0}]' -f ($server['user'] -f $Context)) }
+            else { Throw ('Error updating user password for app [{0}]' -f $Context) }
         }
         else {
-            Throw ('Error retrieving user for app [{0}]' -f ($server['user'] -f $Context))
+            Throw ('Error retrieving user for app [{0}]' -f $Context)
         }
     }
 }

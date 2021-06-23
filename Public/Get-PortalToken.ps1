@@ -4,8 +4,8 @@ function Get-PortalToken {
         Generate token
     .DESCRIPTION
         Generate token for ArcGIS Portal
-    .PARAMETER URL
-        Target ArcGIS Portal URL
+    .PARAMETER Context
+        Portal context (e.g., https://arcgis.com/arcgis)
     .PARAMETER Credential
         PowerShell credential object containing username and password
     .PARAMETER Referer
@@ -25,9 +25,8 @@ function Get-PortalToken {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal URL')]
-        [ValidateNotNullOrEmpty()]
-        [ValidateScript({ $_.AbsoluteUri -match 'https://[\w\/\.-]+[rest|admin]\/generateToken' })]
-        [System.Uri] $URL,
+        [ValidatePattern('^https://[\w\/\.-]+[^/]$')]
+        [System.Uri] $Context,
 
         [Parameter(Mandatory, HelpMessage = 'PS Credential object containing un and pw')]
         [ValidateNotNullOrEmpty()]
@@ -42,15 +41,16 @@ function Get-PortalToken {
     )
 
     Process {
+
         $restParams = @{
-            Uri    = $URL.AbsoluteUri #'https://myDomain.com/arcgis/sharing/rest/generateToken'
+            Uri    = '{0}/sharing/rest/generateToken' -f $Context
             Method = "POST"
             Body   = @{
                 username   = $Credential.UserName
                 password   = $Credential.GetNetworkCredential().password
                 #client     = 'requestip'
                 #referer    = 'http' # REQUIRED FOR PYTHON API
-                referer    = if (!$PSBoundParameters.ContainsKey('Referer')) { '{0}://{1}' -f $URL.Scheme, $URL.Authority } else { $Referer }
+                referer    = if (!$PSBoundParameters.ContainsKey('Referer')) { '{0}://{1}' -f $Context.Scheme, $Context.Authority } else { $Referer }
                 expiration = $Expiration #minutes
                 f          = 'pjson'
             }
