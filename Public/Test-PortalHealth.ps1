@@ -6,6 +6,8 @@ function Test-PortalHealth {
         Send a request to the Portal health check endpoint
     .PARAMETER Context
         Target Portal context
+    .PARAMETER SkipCertificateCheck
+        Ignore missing or invalid certificate
     .INPUTS
         None.
     .OUTPUTS
@@ -20,14 +22,18 @@ function Test-PortalHealth {
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript({ $_.AbsoluteUri -match '^https://[\w\/\.-]+[^/]$' })]
-        [System.Uri] $Context
+        [ValidateScript({ $_.AbsoluteUri -match '^https://[\w\/\.:-]+[^/]$' })]
+        [System.Uri] $Context,
+
+        [Parameter(HelpMessage = 'Skip SSL certificate check')]
+        [switch] $SkipCertificateCheck
     )
     Process {
         $restParams = @{
             Uri    = '{0}/portaladmin/healthCheck?f=json' -f $Context
             Method = 'GET'
         }
+        if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
         Invoke-RestMethod @restParams
     }
 }
