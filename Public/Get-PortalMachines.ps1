@@ -8,6 +8,8 @@ function Get-PortalMachines {
         Portal context (e.g., https://arcgis.com/arcgis)
     .PARAMETER Token
         Portal token
+    .PARAMETER SkipCertificateCheck
+        Ignore missing or invalid certificate
     .INPUTS
         None.
     .OUTPUTS
@@ -27,7 +29,10 @@ function Get-PortalMachines {
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
         [ValidatePattern('^[\w\.=-]+$')]
-        [String] $Token
+        [String] $Token,
+
+        [Parameter(HelpMessage = 'Skip SSL certificate check')]
+        [switch] $SkipCertificateCheck
     )
     Process {
         $restParams = @{
@@ -38,7 +43,7 @@ function Get-PortalMachines {
                 token = $Token
             }
         }
-
+        if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
         Invoke-RestMethod @restParams
     }
 }
