@@ -6,6 +6,8 @@ function Test-ServerHealth {
         Send a request to the ArcGIS Server health check endpoint
     .PARAMETER Context
         Target Server context
+    .PARAMETER Token
+        Portal token
     .PARAMETER SkipCertificateCheck
         Ignore missing or invalid certificate
     .INPUTS
@@ -25,6 +27,10 @@ function Test-ServerHealth {
         [ValidateScript({ $_.AbsoluteUri -match '^https://[\w\/\.:-]+?[^/]$' })]
         [System.Uri] $Context,
 
+        [Parameter(Mandatory = $false, HelpMessage = 'Portal token')]
+        [ValidatePattern('^[\w\.=-]+$')]
+        [String] $Token,
+
         [Parameter(HelpMessage = 'Skip SSL certificate check')]
         [switch] $SkipCertificateCheck
     )
@@ -34,6 +40,7 @@ function Test-ServerHealth {
             Method = 'GET'
         }
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
+        if ($PSBoundParameters.ContainsKey('Token')) { $restParams['Body'] = @{ token = $Token } }
         Invoke-RestMethod @restParams
     }
 }
