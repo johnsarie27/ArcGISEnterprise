@@ -35,7 +35,7 @@ function Update-PortalPSA {
 
     Process {
         # GET TOKEN
-        $token = Get-PortalToken -URL $Context -Credential $Credential
+        $token = Get-PortalToken -Context $Context -Credential $Credential
 
         $username = $Credential.GetNetworkCredential().UserName
         $status = Get-PortalUser -Context $Context -Username $username -Token $token.token

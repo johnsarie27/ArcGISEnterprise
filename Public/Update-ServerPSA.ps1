@@ -35,7 +35,7 @@ function Update-ServerPSA {
 
     Process {
         # GET TOKEN
-        $token = Get-ServerToken -URL $Context -Credential $Credential
+        $token = Get-ServerToken -Context $Context -Credential $Credential
 
         # CHECK USER STATUS
         $status = Get-ServerPSA -Context $Context -Token $token.token
