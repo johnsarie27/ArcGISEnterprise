@@ -19,6 +19,9 @@ function Update-ServerPSA {
         Explanation of what the example does
     .NOTES
         General notes
+        https://developers.arcgis.com/rest/enterprise-administration/server/psa.htm
+        https://developers.arcgis.com/rest/enterprise-administration/server/updatepsa.htm
+        https://developers.arcgis.com/rest/users-groups-and-items/update-user.htm
     ========================================================================= #>
     [CmdletBinding()]
     Param(
