@@ -1,4 +1,4 @@
-function Get-ServiceItemInfo {
+function Get-ServiceInfo {
     <# =========================================================================
     .SYNOPSIS
         Get service item info
