@@ -48,10 +48,8 @@ function Get-ServerToken {
     )
 
     Process {
-
         $serverUri = '{0}/admin/generateToken' -f $Context
         if ( $PSBoundParameters.ContainsKey('NonAdmin') ) { $serverUri = '{0}/tokens/generateToken' -f $Context }
-        if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
 
         $restParams = @{
             Uri    = $serverUri
@@ -68,6 +66,8 @@ function Get-ServerToken {
 
         # WHEN USING THE VALUES ABOVE FOR CLIENT AND REFERER, YOU MUST ADD THE HEADER BELOW TO ANY SUBSEQUENT CALLS
         # Headers = @{ Referer = 'referer-value' }
+
+        if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
 
         try { $response = Invoke-RestMethod @restParams }
         catch { $response = $_.Exception.Response }
