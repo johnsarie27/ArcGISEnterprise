@@ -12,6 +12,8 @@ function Get-PortalToken {
         Referer
     .PARAMETER Expiration
         Token expiration time in minutes
+    .PARAMETER SkipCertificateCheck
+        Ignore missing or invalid certificate
     .INPUTS
         None.
     .OUTPUTS
@@ -37,7 +39,10 @@ function Get-PortalToken {
 
         [Parameter(HelpMessage = 'Token expiration time in minutes')]
         [ValidateRange(1,900)]
-        [int] $Expiration = 60
+        [int] $Expiration = 60,
+
+        [Parameter(HelpMessage = 'Skip SSL certificate check')]
+        [switch] $SkipCertificateCheck
     )
 
     Process {
@@ -55,6 +60,8 @@ function Get-PortalToken {
                 f          = 'pjson'
             }
         }
+
+        if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
 
         Write-Verbose -Message ('Referer: {0}' -f $restParams['Body']['referer'])
 
