@@ -1,4 +1,4 @@
-function Get-Service {
+function Get-AGSService {
     <# =========================================================================
     .SYNOPSIS
         Get ArcGIS service
@@ -21,7 +21,7 @@ function Get-Service {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> Get-Service -Context 'https://arcgis.com/arcgis' -Token $token -ServiceName SampleWorldCities -ServiceType MapServer
+        PS C:\> Get-AGSService -Context 'https://arcgis.com/arcgis' -Token $token -ServiceName SampleWorldCities -ServiceType MapServer
         Returns the service object for the SampleWorldCities service
     .NOTES
         General notes
