@@ -19,7 +19,7 @@ function Get-PortalToken {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> Get-PortalToken -URL https://mydomain.com/arcgis -Credential $creds
+        PS C:\> Get-PortalToken -Context https://mydomain.com/arcgis -Credential $creds
         Generate token for mydomain.com
     .NOTES
         General notes
