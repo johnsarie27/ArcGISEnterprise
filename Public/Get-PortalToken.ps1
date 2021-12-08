@@ -27,6 +27,7 @@ function Get-PortalToken {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal URL')]
+        #[Alias('Uri')]
         [ValidatePattern('^https://[\w\/\.-]+[^/]$')]
         [System.Uri] $Context,
 
