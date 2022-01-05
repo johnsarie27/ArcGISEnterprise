@@ -14,8 +14,8 @@ function Get-ServerToken {
         Client
     .PARAMETER Expiration
         Token expiration time in minutes
-    .PARAMETER NonAdmin
-        Use the non-Admin URL to generate the token
+    .PARAMETER Admin
+        Use the Admin URL to generate the token
     .PARAMETER SkipCertificateCheck
         Ignore missing or invalid certificate
     .INPUTS
@@ -50,16 +50,16 @@ function Get-ServerToken {
         [ValidateRange(1, 900)]
         [int] $Expiration,
 
-        [Parameter(HelpMessage = 'Use a non-Admin URL')]
-        [switch] $NonAdmin,
+        [Parameter(HelpMessage = 'Use the Admin URL to get a token')]
+        [switch] $Admin,
 
         [Parameter(HelpMessage = 'Skip SSL certificate check')]
         [switch] $SkipCertificateCheck
     )
 
     Process {
-        $serverUri = '{0}/admin/generateToken' -f $Context
-        if ( $PSBoundParameters.ContainsKey('NonAdmin') ) { $serverUri = '{0}/tokens/generateToken' -f $Context }
+        $serverUri = '{0}/tokens/generateToken' -f $Context
+        if ( $PSBoundParameters.ContainsKey('Admin') ) { $serverUri = '{0}/admin/generateToken' -f $Context }
 
         $restParams = @{
             Uri    = $serverUri
