@@ -8,6 +8,10 @@ function Get-ServerToken {
         Portal context (e.g., https://arcgis.com/arcgis)
     .PARAMETER Credential
         PowerShell credential object containing username and password
+    .PARAMETER Referer
+        Referer
+    .PARAMETER Client
+        Client
     .PARAMETER Expiration
         Token expiration time in minutes
     .PARAMETER NonAdmin
@@ -36,9 +40,15 @@ function Get-ServerToken {
         [ValidateNotNullOrEmpty()]
         [pscredential] $Credential,
 
+        [Parameter(HelpMessage = 'Referer')]
+        [string] $Referer,
+
+        [Parameter(HelpMessage = 'Client')]
+        [string] $Client,
+
         [Parameter(HelpMessage = 'Token expiration time in minutes')]
         [ValidateRange(1, 900)]
-        [int] $Expiration = 60,
+        [int] $Expiration,
 
         [Parameter(HelpMessage = 'Use a non-Admin URL')]
         [switch] $NonAdmin,
@@ -57,9 +67,8 @@ function Get-ServerToken {
             Body   = @{
                 username   = $Credential.UserName
                 password   = $Credential.GetNetworkCredential().password
-                client     = 'referer'
-                referer    = 'referer'
-                expiration = $Expiration #minutes
+                referer    = if ($PSBoundParameters.ContainsKey('Referer')) { $Referer } else { 'referer' }
+                client     = if ($PSBoundParameters.ContainsKey('Client')) { $Client } else { 'requestip' } # 'referer'
                 f          = 'pjson'
             }
         }
@@ -68,6 +77,7 @@ function Get-ServerToken {
         # Headers = @{ Referer = 'referer-value' }
 
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
+        if ($PSBoundParameters.ContainsKey('Expiration')) { $restParams.Body.Add('expiration', $Expiration) }
 
         try { $response = Invoke-RestMethod @restParams }
         catch { $response = $_.Exception.Response }
