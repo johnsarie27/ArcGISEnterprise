@@ -41,10 +41,10 @@ function Get-ServerToken {
         [pscredential] $Credential,
 
         [Parameter(HelpMessage = 'Referer')]
-        [string] $Referer,
+        [string] $Referer = 'referer',
 
         [Parameter(HelpMessage = 'Client')]
-        [string] $Client,
+        [string] $Client = 'requestip',
 
         [Parameter(HelpMessage = 'Token expiration time in minutes')]
         [ValidateRange(1, 900)]
@@ -61,20 +61,20 @@ function Get-ServerToken {
         $serverUri = '{0}/tokens/generateToken' -f $Context
         if ( $PSBoundParameters.ContainsKey('Admin') ) { $serverUri = '{0}/admin/generateToken' -f $Context }
 
+        # WHEN USING 'referer' FOR BOTH CLIENT AND REFERER, YOU MUST ADD THE HEADER BELOW TO ANY SUBSEQUENT CALLS
+        # Headers = @{ Referer = 'referer-value' }
+
         $restParams = @{
             Uri    = $serverUri
             Method = 'POST'
             Body   = @{
                 username   = $Credential.UserName
                 password   = $Credential.GetNetworkCredential().password
-                referer    = if ($PSBoundParameters.ContainsKey('Referer')) { $Referer } else { 'referer' }
-                client     = if ($PSBoundParameters.ContainsKey('Client')) { $Client } else { 'requestip' } # 'referer'
+                referer    = $Referer
+                client     = $Client
                 f          = 'pjson'
             }
         }
-
-        # WHEN USING THE VALUES ABOVE FOR CLIENT AND REFERER, YOU MUST ADD THE HEADER BELOW TO ANY SUBSEQUENT CALLS
-        # Headers = @{ Referer = 'referer-value' }
 
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
         if ($PSBoundParameters.ContainsKey('Expiration')) { $restParams.Body.Add('expiration', $Expiration) }
