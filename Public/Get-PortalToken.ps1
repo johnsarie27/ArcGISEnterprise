@@ -72,7 +72,7 @@ function Get-PortalToken {
         # CHECK FOR ERRORS AND RETURN
         if ( -not $response.token ) {
             # CHECK FOR VALID JSON WITH ERROR DETAILS
-            if ( $response.error ) {
+            if ( $response.error.details ) {
                 if ( $response.error.details.GetType().FullName -eq 'System.Object[]' ) { $details = $response.error.details -join "; " }
                 else { $details = $response.error.details }
 
