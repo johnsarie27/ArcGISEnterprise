@@ -27,17 +27,15 @@ function Get-ServiceInfo {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]
-        [ValidateNotNullOrEmpty()]
-        [ValidateScript({ $_.AbsoluteUri -match '^https://[\w\/\.-]+[^/]$' })]
+        [ValidateScript({ $_.AbsoluteUri -match $context_regex })]
         [System.Uri] $Context,
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
-        [ValidatePattern('^[\w\.=-]+$')]
+        [ValidateScript({ $_ -match $token_regex })]
         [String] $Token,
 
         [Parameter(Mandatory, HelpMessage = 'Service object returned from Get-Service or Get-ServiceList')]
         [ValidateScript({$_.serviceName -and $_.type})]
-        [ValidateNotNullOrEmpty()]
         [System.Object] $Service,
 
         [Parameter(HelpMessage = 'Folder')]

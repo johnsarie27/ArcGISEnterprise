@@ -23,12 +23,11 @@ function Test-PortalFederation {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]
-        [ValidateNotNullOrEmpty()]
-        [ValidateScript({ $_.AbsoluteUri -match '^https://[\w\/\.-]+[^/]$' })]
+        [ValidateScript({ $_.AbsoluteUri -match $context_regex })]
         [System.Uri] $Context,
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
-        [ValidatePattern('^[\w\.=-]+$')]
+        [ValidateScript({ $_ -match $token_regex })]
         [String] $Token,
 
         [Parameter(HelpMessage = 'Skip SSL certificate check')]

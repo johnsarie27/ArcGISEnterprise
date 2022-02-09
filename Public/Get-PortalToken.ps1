@@ -28,7 +28,7 @@ function Get-PortalToken {
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal URL')]
         #[Alias('Uri')]
-        #[ValidatePattern($context_regex)]
+        #[ValidatePattern('^https?://[\w\/\.:-]+[^/]$')]
         [ValidateScript({ $_.AbsoluteUri -match $context_regex })]
         [System.Uri] $Context,
 

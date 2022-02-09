@@ -26,7 +26,7 @@ function Update-ServerPSA {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Server base URI (a.k.a., context)')]
-        [ValidatePattern('^https://[\w\/\.-]+[^/]$')]
+        [ValidateScript({ $_.AbsoluteUri -match $context_regex })]
         [System.Uri] $Context,
 
         [Parameter(Mandatory, HelpMessage = 'PSCredential object containing current username and password')]

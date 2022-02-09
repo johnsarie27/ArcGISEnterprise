@@ -23,12 +23,10 @@ function Test-PortalHealth {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]
-        [ValidateNotNullOrEmpty()]
         [ValidateScript({ $_.AbsoluteUri -match $context_regex })]
         [System.Uri] $Context,
 
         [Parameter(Mandatory = $false, HelpMessage = 'Portal token')]
-        #[ValidatePattern('^[\w\.=-]+$')]
         [ValidateScript({ $_ -match $token_regex })]
         [String] $Token,
 
