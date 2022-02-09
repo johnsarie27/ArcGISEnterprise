@@ -28,7 +28,8 @@ function Get-PortalToken {
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal URL')]
         #[Alias('Uri')]
-        [ValidatePattern('^https://[\w\/\.-]+[^/]$')]
+        #[ValidatePattern($context_regex)]
+        [ValidateScript({ $_.AbsoluteUri -match $context_regex })]
         [System.Uri] $Context,
 
         [Parameter(Mandatory, HelpMessage = 'PS Credential object containing un and pw')]

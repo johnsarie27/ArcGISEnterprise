@@ -1,7 +1,7 @@
 # ==============================================================================
-# Updated:      2021-06-21
-# Created by:   Justin Johns
-# Filename:     ArcGISEnterprise.psm1
+# Filename: ArcGISEnterprise.psm1
+# Updated:  2022-02-09
+# Author:   Justin Johns
 # ==============================================================================
 
 # IMPORT ALL FUNCTIONS
@@ -10,7 +10,8 @@ foreach ( $directory in @('Public', 'Private') ) {
 }
 
 # VARIABLES
-
+New-Variable -Name 'context_regex' -Option Constant -Value '^https?://[\w\/\.:-]+[^/]$'
+New-Variable -Name 'token_regex' -Option Constant -Value '^[\w\.=-]+$'
 
 # EXPORT MEMBERS
 # THESE ARE SPECIFIED IN THE MODULE MANIFEST AND THEREFORE DON'T NEED TO BE LISTED HERE

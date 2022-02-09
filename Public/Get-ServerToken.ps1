@@ -33,7 +33,8 @@ function Get-ServerToken {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal URL')]
-        [ValidatePattern('^https://[\w\/\.-]+[^/]$')]
+        #[ValidatePattern('^https://[\w\/\.-]+[^/]$')]
+        [ValidateScript({ $_.AbsoluteUri -match $context_regex })]
         [System.Uri] $Context,
 
         [Parameter(Mandatory, HelpMessage = 'PS Credential object containing un and pw')]
@@ -85,7 +86,7 @@ function Get-ServerToken {
         # CHECK FOR ERRORS AND RETURN
         if ( -not $response.token ) {
             # CHECK FOR VALID JSON WITH ERROR DETAILS
-            if ( $response.error ) {
+            if ( $response.error.details ) {
                 if ( $response.error.details.GetType().FullName -eq 'System.Object[]' ) { $details = $response.error.details -join "; " }
                 else { $details = $response.error.details }
 
