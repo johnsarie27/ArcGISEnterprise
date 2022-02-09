@@ -30,11 +30,11 @@ function Get-ServiceList {
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
         [ValidateScript({ $_ -match $token_regex })]
-        [String] $Token,
+        [System.String] $Token,
 
         [Parameter(HelpMessage = 'Folder')]
         [ValidateNotNullOrEmpty()]
-        [String] $Folder,
+        [System.String] $Folder,
 
         [Parameter(HelpMessage = 'Skip SSL certificate check')]
         [switch] $SkipCertificateCheck

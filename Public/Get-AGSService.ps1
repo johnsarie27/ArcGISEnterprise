@@ -34,20 +34,20 @@ function Get-AGSService {
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
         [ValidateScript({ $_ -match $token_regex })]
-        [String] $Token,
+        [System.String] $Token,
 
         [Parameter(Mandatory, HelpMessage = 'Service name')]
         [ValidateNotNullOrEmpty()]
-        [String] $ServiceName,
+        [System.String] $ServiceName,
 
         [Parameter(Mandatory, HelpMessage = 'Service name')]
         [ValidateNotNullOrEmpty()]
         #[ValidateSet('FeatureServer', 'MapServer')]
-        [String] $ServiceType,
+        [System.String] $ServiceType,
 
         [Parameter(HelpMessage = 'Folder')]
         [ValidateNotNullOrEmpty()]
-        [String] $Folder,
+        [System.String] $Folder,
 
         [Parameter(HelpMessage = 'Skip SSL certificate check')]
         [switch] $SkipCertificateCheck

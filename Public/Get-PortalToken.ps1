@@ -34,14 +34,14 @@ function Get-PortalToken {
 
         [Parameter(Mandatory, HelpMessage = 'PS Credential object containing un and pw')]
         [ValidateNotNullOrEmpty()]
-        [pscredential] $Credential,
+        [System.Management.Automation.PSCredential] $Credential,
 
         [Parameter(HelpMessage = 'Referer')]
-        [string] $Referer,
+        [System.String] $Referer,
 
         [Parameter(HelpMessage = 'Token expiration time in minutes')]
         [ValidateRange(1,900)]
-        [int] $Expiration = 60,
+        [System.Int32] $Expiration = 60,
 
         [Parameter(HelpMessage = 'Skip SSL certificate check')]
         [switch] $SkipCertificateCheck

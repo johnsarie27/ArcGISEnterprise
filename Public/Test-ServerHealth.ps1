@@ -28,7 +28,7 @@ function Test-ServerHealth {
 
         [Parameter(Mandatory = $false, HelpMessage = 'Portal token')]
         [ValidateScript({ $_ -match $token_regex })]
-        [String] $Token,
+        [System.String] $Token,
 
         [Parameter(HelpMessage = 'Skip SSL certificate check')]
         [switch] $SkipCertificateCheck

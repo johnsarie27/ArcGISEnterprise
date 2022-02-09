@@ -26,7 +26,7 @@ function Test-PortalToken {
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
         [ValidateScript({ $_ -match $token_regex })]
-        [String] $Token
+        [System.String] $Token
     )
     Process {
         $restParams = @{

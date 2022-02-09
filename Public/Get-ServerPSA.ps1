@@ -28,10 +28,10 @@ function Get-ServerPSA {
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
         [ValidateScript({ $_ -match $token_regex })]
-        [String] $Token,
+        [System.String] $Token,
 
         [Parameter(HelpMessage = 'Referer')]
-        [string] $Referer = 'referer-value'
+        [System.String] $Referer = 'referer-value'
     )
     Process {
         $restParams = @{

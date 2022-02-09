@@ -26,11 +26,11 @@ function Get-SecurityPolicy {
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
         [ValidateScript({ $_ -match $token_regex })]
-        [String] $Token,
+        [System.String] $Token,
 
         [Parameter(HelpMessage = 'Portal application ID')]
         [ValidateNotNullOrEmpty()]
-        [String] $Id = '0123456789ABCDEF'
+        [System.String] $Id = '0123456789ABCDEF'
     )
     Process {
         $restParams = @{

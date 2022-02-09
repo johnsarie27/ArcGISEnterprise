@@ -30,11 +30,11 @@ function Get-PortalMachineStatus {
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
         [ValidateScript({ $_ -match $token_regex })]
-        [String] $Token,
+        [System.String] $Token,
 
         [Parameter(Mandatory, HelpMessage = 'Portal system to test')]
         [ValidateNotNullOrEmpty()]
-        [string] $Machine,
+        [System.String] $Machine,
 
         [Parameter(HelpMessage = 'Skip SSL certificate check')]
         [switch] $SkipCertificateCheck

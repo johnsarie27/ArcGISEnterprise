@@ -28,11 +28,11 @@ function Get-PortalOAuthToken {
 
         [Parameter(Mandatory, HelpMessage = 'PS Credential object containing un and pw')]
         [ValidateNotNullOrEmpty()]
-        [pscredential] $Credential,
+        [System.Management.Automation.PSCredential] $Credential,
 
         [Parameter(HelpMessage = 'Token expiration time in minutes')]
         [ValidateRange(1, 1440)]
-        [int] $Expiration = 15
+        [System.Int32] $Expiration = 15
     )
     Process {
         $requestParams = @{

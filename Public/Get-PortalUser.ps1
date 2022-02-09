@@ -28,11 +28,11 @@ function Get-PortalUser {
 
         [Parameter(Mandatory, HelpMessage = 'Portal username')]
         [ValidatePattern('^[\w\.@-]+$')]
-        [String] $Username,
+        [System.String] $Username,
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
         [ValidateScript({ $_ -match $token_regex })]
-        [String] $Token
+        [System.String] $Token
     )
     Process {
         $restParams = @{

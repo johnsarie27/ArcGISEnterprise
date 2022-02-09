@@ -39,17 +39,17 @@ function Get-ServerToken {
 
         [Parameter(Mandatory, HelpMessage = 'PS Credential object containing un and pw')]
         [ValidateNotNullOrEmpty()]
-        [pscredential] $Credential,
+        [System.Management.Automation.PSCredential] $Credential,
 
         [Parameter(HelpMessage = 'Referer')]
-        [string] $Referer = 'referer',
+        [System.String] $Referer = 'referer',
 
         [Parameter(HelpMessage = 'Client')]
-        [string] $Client = 'requestip',
+        [System.String] $Client = 'requestip',
 
         [Parameter(HelpMessage = 'Token expiration time in minutes')]
         [ValidateRange(1, 900)]
-        [int] $Expiration,
+        [System.Int32] $Expiration,
 
         [Parameter(HelpMessage = 'Use the Admin URL to get a token')]
         [switch] $Admin,
