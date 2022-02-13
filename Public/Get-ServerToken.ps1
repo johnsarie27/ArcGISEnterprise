@@ -52,10 +52,10 @@ function Get-ServerToken {
         [System.Int32] $Expiration,
 
         [Parameter(HelpMessage = 'Use the Admin URL to get a token')]
-        [switch] $Admin,
+        [System.Management.Automation.SwitchParameter] $Admin,
 
         [Parameter(HelpMessage = 'Skip SSL certificate check')]
-        [switch] $SkipCertificateCheck
+        [System.Management.Automation.SwitchParameter] $SkipCertificateCheck
     )
 
     Process {

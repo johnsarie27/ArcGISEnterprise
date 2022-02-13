@@ -43,7 +43,7 @@ function Get-ServiceInfo {
         [System.String] $Folder,
 
         [Parameter(HelpMessage = 'Skip SSL certificate check')]
-        [switch] $SkipCertificateCheck
+        [System.Management.Automation.SwitchParameter] $SkipCertificateCheck
     )
     Process {
         if ($PSBoundParameters.ContainsKey('Folder')) {

@@ -37,7 +37,7 @@ function Get-PortalMachineStatus {
         [System.String] $Machine,
 
         [Parameter(HelpMessage = 'Skip SSL certificate check')]
-        [switch] $SkipCertificateCheck
+        [System.Management.Automation.SwitchParameter] $SkipCertificateCheck
     )
     Process {
         $restParams = @{

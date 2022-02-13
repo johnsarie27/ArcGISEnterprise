@@ -31,7 +31,7 @@ function Get-PortalIndexStatus {
         [System.String] $Token,
 
         [Parameter(HelpMessage = 'Skip SSL certificate check')]
-        [switch] $SkipCertificateCheck
+        [System.Management.Automation.SwitchParameter] $SkipCertificateCheck
     )
     Process {
         $restParams = @{

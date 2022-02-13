@@ -44,7 +44,7 @@ function Get-PortalToken {
         [System.Int32] $Expiration = 60,
 
         [Parameter(HelpMessage = 'Skip SSL certificate check')]
-        [switch] $SkipCertificateCheck
+        [System.Management.Automation.SwitchParameter] $SkipCertificateCheck
     )
 
     Process {
