@@ -1,4 +1,4 @@
-function Get-AGSService {
+function Get-ServerService {
     <# =========================================================================
     .SYNOPSIS
         Get ArcGIS service
@@ -27,6 +27,7 @@ function Get-AGSService {
         General notes
     ========================================================================= #>
     [CmdletBinding()]
+    [Alias('Get-AGSService')]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]
         [ValidateScript({ $_.AbsoluteUri -match $context_regex })]

@@ -1,9 +1,10 @@
-function Test-PortalToken {
+function Get-PortalConfiguration {
     <# =========================================================================
     .SYNOPSIS
-        Test Portal token for validity
+        Get Portal configuration or "self"
     .DESCRIPTION
-        Test Portal token for validity
+        Get Portal configuration or "self." This may also be a good test of
+        Portal token validity
     .PARAMETER Context
         Target Portal context
     .PARAMETER Token
@@ -13,12 +14,13 @@ function Test-PortalToken {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> Test-PortalToken -Context 'https://arcgis.com/arcgis' -Token $token
-        Tests Portal token $token for validity
+        PS C:\> Get-PortalConfiguration -Context 'https://arcgis.com/arcgis' -Token $token
+        Gets Portal "self" configuration
     .NOTES
         General notes
     ========================================================================= #>
     [CmdletBinding()]
+    [Alias('Test-PortalToken')]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]
         [ValidateScript({ $_.AbsoluteUri -match $context_regex })]
