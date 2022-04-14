@@ -1,4 +1,4 @@
-function Set-PortalSecurityConfiugration {
+function Set-PortalProxyHosts {
     <# =========================================================================
     .SYNOPSIS
         Set Portal security configuration
@@ -6,8 +6,8 @@ function Set-PortalSecurityConfiugration {
         Set Portal security configuration
     .PARAMETER Context
         Portal context (e.g., https://arcgis.com/arcgis)
-    .PARAMETER SecurityConfiguration
-        Security configuration object
+    .PARAMETER ProxyHost
+        Proxy host
     .PARAMETER Referer
         Referer
     .PARAMETER Token
@@ -20,14 +20,8 @@ function Set-PortalSecurityConfiugration {
         System.Object.
     .EXAMPLE
         PS C:\> $cmn = @{ Context = 'https://arcgis.com/arcgis'; Token = $token }
-        PS C:\> $secConf = Get-PortalSecurityConfiguration @cmn
-        PS C:\> $body = [PSCustomObject] @{
-        PS C:\>     allowedProxyHosts = 'test.com'
-        PS C:\>     enableAutomaticAccountCreation = $secConf.enableAutomaticAccountCreation
-        PS C:\>     disableServicesDirectory = $secConf.disableServicesDirectory
-        PS C:\> }
-        PS C:\> Set-PortalSecurityConfiugration -SecurityConfiguration $body @cmn
-        Set security configuration for Portal from existing config with a change to allowedProxyHosts
+        PS C:\> Set-PortalSecurityConfiugration -ProxyHost 'test.com' @cmn
+        Set Portal allowedProxyHosts to 'test.com'
     .NOTES
         General notes
     ========================================================================= #>
@@ -37,11 +31,12 @@ function Set-PortalSecurityConfiugration {
         [ValidateScript({ $_.AbsoluteUri -match $context_regex })]
         [System.Uri] $Context,
 
-        [Parameter(Mandatory, HelpMessage = 'Security configuration')]
-        [ValidateScript({$_ | Get-Member -MemberType NoteProperty})]
-        [System.Object] $SecurityConfiguration,
+        [Parameter(Mandatory, HelpMessage = 'Proxy host')]
+        [ValidateNotNullOrEmpty()]
+        [System.String[]] $ProxyHost,
 
         [Parameter(HelpMessage = 'Referer')]
+        [ValidateNotNullOrEmpty()]
         [System.String] $Referer,
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
@@ -52,8 +47,21 @@ function Set-PortalSecurityConfiugration {
         [System.Management.Automation.SwitchParameter] $SkipCertificateCheck
     )
     Process {
+        # SET COMMON PARAMETERS
+        $cmnParams = @{ Context = $Context; Token = $Token; ErrorAction = 'Stop' }
+        if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $cmnParams['SkipCertificateCheck'] = $true }
+
+        # GET PORTAL SECURITY CONFIGURATION
+        $secConf = Get-PortalSecurityConfiguration @cmnParams
+
+        # UPDATE HERE
+        $newConfig = @{
+            allowedProxyHosts              = ($ProxyHost -join ',')
+            enableAutomaticAccountCreation = $secConf.enableAutomaticAccountCreation
+            disableServicesDirectory       = $secConf.disableServicesDirectory
+        }
+
         $Referer = if ($PSBoundParameters.ContainsKey('Referer')) { $Referer } else { '{0}://{1}' -f $Context.Scheme, $Context.Authority }
-        $newConfig = $SecurityConfiguration | ConvertTo-Json -Compress
 
         $restParams = @{
             Uri    = '{0}/portaladmin/security/config/update' -f $Context
@@ -66,7 +74,7 @@ function Set-PortalSecurityConfiugration {
             Body   = @{
                 f     = 'json'
                 token = $Token
-                securityConfig = $newConfig
+                securityConfig = $newConfig | ConvertTo-Json -Compress
             }
         }
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }

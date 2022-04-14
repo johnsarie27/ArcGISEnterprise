@@ -36,18 +36,15 @@ function Set-PortalAllowedOrigins {
         [System.String] $Token
     )
     Process {
-        $newOrigins = $Origin -join ','
-
         $restParams = @{
             Uri    = '{0}/sharing/rest/portals/self/update' -f $Context
             Method = 'POST'
             Body   = @{
                 f              = 'json'
                 token          = $Token
-                allowedOrigins = $newOrigins
+                allowedOrigins = ($Origin -join ',')
             }
         }
-
         Invoke-RestMethod @restParams
     }
 }
