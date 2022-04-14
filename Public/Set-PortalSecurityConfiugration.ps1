@@ -19,8 +19,15 @@ function Set-PortalSecurityConfiugration {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> Set-PortalSecurityConfiugration -Context 'https://arcgis.com/arcgis' -Token $token
-        Set security configuration from Portal
+        PS C:\> $cmn = @{ Context = 'https://arcgis.com/arcgis'; Token = $token }
+        PS C:\> $secConf = Get-PortalSecurityConfiguration @cmn
+        PS C:\> $body = [PSCustomObject] @{
+        PS C:\>     allowedProxyHosts = 'test.com'
+        PS C:\>     enableAutomaticAccountCreation = $secConf.enableAutomaticAccountCreation
+        PS C:\>     disableServicesDirectory = $secConf.disableServicesDirectory
+        PS C:\> }
+        PS C:\> Set-PortalSecurityConfiugration -SecurityConfiguration $body @cmn
+        Set security configuration for Portal from existing config with a change to allowedProxyHosts
     .NOTES
         General notes
     ========================================================================= #>
@@ -46,7 +53,7 @@ function Set-PortalSecurityConfiugration {
     )
     Process {
         $Referer = if ($PSBoundParameters.ContainsKey('Referer')) { $Referer } else { '{0}://{1}' -f $Context.Scheme, $Context.Authority }
-        $SecurityConfiguration = $SecurityConfiguration | ConvertTo-Json -Compress
+        $newConfig = $SecurityConfiguration | ConvertTo-Json -Compress
 
         $restParams = @{
             Uri    = '{0}/portaladmin/security/config/update' -f $Context
@@ -59,7 +66,7 @@ function Set-PortalSecurityConfiugration {
             Body   = @{
                 f     = 'json'
                 token = $Token
-                securityConfig = $SecurityConfiguration
+                securityConfig = $newConfig
             }
         }
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
