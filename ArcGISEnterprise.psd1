@@ -86,7 +86,7 @@
         'Set-PortalProxyHosts'
         'Set-ServerAllowedOrigins'
         'Test-PortalFederation'
-        'Test-PortalToken'
+        'Test-PortalHealth'
         'Test-ServerHealth'
         'Update-PortalPSA'
         'Update-ServerPSA'
@@ -102,7 +102,7 @@
     AliasesToExport   = @(
         'Get-AGSService'
         'Get-SecurityPolicy'
-        'Test-PortalHealth'
+        'Test-PortalToken'
     )
 
     # DSC resources to export from this module
