@@ -38,7 +38,7 @@ function Test-PortalFederation {
             Uri    = '{0}/portaladmin/federation/servers/validate' -f $Context
             Method = 'GET'
             Body   = @{
-                f     = 'pjson'
+                f     = 'json'
                 token = $Token
             }
         }

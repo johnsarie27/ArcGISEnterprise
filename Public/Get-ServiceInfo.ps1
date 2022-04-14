@@ -57,7 +57,7 @@ function Get-ServiceInfo {
             Uri    = $uri
             Method = 'GET'
             Body   = @{
-                f     = 'pjson'
+                f     = 'json'
                 token = $Token
             }
         }

@@ -38,7 +38,7 @@ function Get-PortalIndexStatus {
             Uri    = '{0}/portaladmin/system/indexer/status' -f $Context
             Method = 'GET'
             Body   = @{
-                f     = 'pjson'
+                f     = 'json'
                 token = $Token
             }
         }

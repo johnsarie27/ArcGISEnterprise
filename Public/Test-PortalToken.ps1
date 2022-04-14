@@ -33,7 +33,7 @@ function Test-PortalToken {
             Uri    = '{0}/sharing/rest/portals/self' -f $Context
             Method = 'POST'
             Body   = @{
-                f     = 'pjson'
+                f     = 'json'
                 token = $Token
             }
         }

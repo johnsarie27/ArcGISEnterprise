@@ -1,19 +1,17 @@
-function Get-AGSService {
+function Set-PortalSecurityConfiugration {
     <# =========================================================================
     .SYNOPSIS
-        Get ArcGIS service
+        Set Portal security configuration
     .DESCRIPTION
-        Get ArcGIS service
+        Set Portal security configuration
     .PARAMETER Context
         Portal context (e.g., https://arcgis.com/arcgis)
+    .PARAMETER SecurityConfiguration
+        Security configuration object
+    .PARAMETER Referer
+        Referer
     .PARAMETER Token
         Portal token
-    .PARAMETER ServiceName
-        Name of service
-    .PARAMETER ServiceType
-        Type of service (e.g., FeatureServer or MapServer)
-    .PARAMETER Folder
-        Folder in ArcGIS Server
     .PARAMETER SkipCertificateCheck
         Ignore missing or invalid certificate
     .INPUTS
@@ -21,8 +19,8 @@ function Get-AGSService {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> Get-AGSService -Context 'https://arcgis.com/arcgis' -Token $token -ServiceName SampleWorldCities -ServiceType MapServer
-        Returns the service object for the SampleWorldCities service
+        PS C:\> Set-PortalSecurityConfiugration -Context 'https://arcgis.com/arcgis' -Token $token
+        Set security configuration from Portal
     .NOTES
         General notes
     ========================================================================= #>
@@ -32,40 +30,36 @@ function Get-AGSService {
         [ValidateScript({ $_.AbsoluteUri -match $context_regex })]
         [System.Uri] $Context,
 
+        [Parameter(Mandatory, HelpMessage = 'Security configuration')]
+        [ValidateScript({$_ | Get-Member -MemberType NoteProperty})]
+        [System.Object] $SecurityConfiguration,
+
+        [Parameter(HelpMessage = 'Referer')]
+        [System.String] $Referer,
+
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
         [ValidateScript({ $_ -match $token_regex })]
         [System.String] $Token,
-
-        [Parameter(Mandatory, HelpMessage = 'Service name')]
-        [ValidateNotNullOrEmpty()]
-        [System.String] $ServiceName,
-
-        [Parameter(Mandatory, HelpMessage = 'Service name')]
-        [ValidateNotNullOrEmpty()]
-        #[ValidateSet('FeatureServer', 'MapServer')]
-        [System.String] $ServiceType,
-
-        [Parameter(HelpMessage = 'Folder')]
-        [ValidateNotNullOrEmpty()]
-        [System.String] $Folder,
 
         [Parameter(HelpMessage = 'Skip SSL certificate check')]
         [System.Management.Automation.SwitchParameter] $SkipCertificateCheck
     )
     Process {
-        if ($PSBoundParameters.ContainsKey('Folder')) {
-            $uri = '{0}/admin/services/{1}/{2}.{3}' -f $Context, $Folder, $ServiceName, $ServiceType
-        }
-        else {
-            $uri = '{0}/admin/services/{1}.{2}' -f $Context, $ServiceName, $ServiceType
-        }
+        $Referer = if ($PSBoundParameters.ContainsKey('Referer')) { $Referer } else { '{0}://{1}' -f $Context.Scheme, $Context.Authority }
+        $SecurityConfiguration = $SecurityConfiguration | ConvertTo-Json -Compress
 
         $restParams = @{
-            Uri    = $uri
-            Method = 'GET'
+            Uri    = '{0}/portaladmin/security/config/update' -f $Context
+            Method = 'POST'
+            Headers = @{
+                accept         = 'text/plain'
+                referer        = $Referer
+                'content-type' = 'application/x-www-form-urlencoded'
+            }
             Body   = @{
                 f     = 'json'
                 token = $Token
+                securityConfig = $SecurityConfiguration
             }
         }
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }

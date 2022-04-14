@@ -37,7 +37,7 @@ function Get-SecurityPolicy {
             Uri    = '{0}/sharing/rest/portals/{1}/securityPolicy' -f $Context, $Id
             Method = 'POST'
             Body   = @{
-                f     = 'pjson'
+                f     = 'json'
                 token = $Token
             }
         }

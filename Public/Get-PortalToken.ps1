@@ -46,8 +46,8 @@ function Get-PortalToken {
         [Parameter(HelpMessage = 'Skip SSL certificate check')]
         [System.Management.Automation.SwitchParameter] $SkipCertificateCheck
     )
-
     Process {
+        $Referer = if ($PSBoundParameters.ContainsKey('Referer')) { $Referer } else { '{0}://{1}' -f $Context.Scheme, $Context.Authority }
 
         $restParams = @{
             Uri    = '{0}/sharing/rest/generateToken' -f $Context
@@ -56,10 +56,9 @@ function Get-PortalToken {
                 username   = $Credential.UserName
                 password   = $Credential.GetNetworkCredential().password
                 #client     = 'requestip'
-                #referer    = 'http' # REQUIRED FOR PYTHON API
-                referer    = if (!$PSBoundParameters.ContainsKey('Referer')) { '{0}://{1}' -f $Context.Scheme, $Context.Authority } else { $Referer }
+                referer    = $Referer # 'http' IS REQUIRED FOR PYTHON API
                 expiration = $Expiration #minutes
-                f          = 'pjson'
+                f          = 'json'
             }
         }
 

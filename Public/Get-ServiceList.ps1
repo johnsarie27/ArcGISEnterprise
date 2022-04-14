@@ -47,7 +47,7 @@ function Get-ServiceList {
             Uri    = $uri
             Method = 'GET'
             Body   = @{
-                f     = 'pjson'
+                f     = 'json'
                 token = $Token
             }
         }

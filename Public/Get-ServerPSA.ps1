@@ -39,7 +39,7 @@ function Get-ServerPSA {
             Method  = 'POST'
             Headers = @{ Referer = $Referer }
             Body    = @{
-                f     = 'pjson'
+                f     = 'json'
                 token = $Token
             }
         }

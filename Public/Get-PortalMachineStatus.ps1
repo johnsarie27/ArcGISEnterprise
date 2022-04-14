@@ -44,7 +44,7 @@ function Get-PortalMachineStatus {
             Uri    = '{0}/portaladmin/machines/status/{1}' -f $Context, $Machine
             Method = 'GET'
             Body   = @{
-                f     = 'pjson'
+                f     = 'json'
                 token = $Token
             }
         }

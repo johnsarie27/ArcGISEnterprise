@@ -46,7 +46,7 @@ function Update-PortalPSA {
                 Uri    = '{0}/sharing/rest/community/users/{1}/update' -f $Context, $username
                 Method = 'POST'
                 Body   = @{
-                    f        = 'pjson'
+                    f        = 'json'
                     token    = $token.token
                     password = $NewPassword.GetNetworkCredential().Password
                 }

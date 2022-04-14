@@ -39,7 +39,7 @@ function Get-PortalOAuthToken {
             Uri    = '{0}/sharing/rest/oauth2/token/' -f $Context
             Method = 'POST'
             Body   = @{
-                f             = 'pjson'
+                f             = 'json'
                 client_id     = $Credential.UserName
                 client_secret = $Credential.GetNetworkCredential().Password
                 grant_type    = 'client_credentials'

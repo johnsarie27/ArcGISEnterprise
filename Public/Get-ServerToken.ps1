@@ -73,7 +73,7 @@ function Get-ServerToken {
                 password   = $Credential.GetNetworkCredential().password
                 referer    = $Referer
                 client     = $Client
-                f          = 'pjson'
+                f          = 'json'
             }
         }
 

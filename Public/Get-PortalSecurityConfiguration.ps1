@@ -1,22 +1,22 @@
-function Get-PortalUser {
+function Get-PortalSecurityConfiugration {
     <# =========================================================================
     .SYNOPSIS
-        Get Portal user
+        Get Portal security configuration
     .DESCRIPTION
-        Get Portal user
+        Get Portal security configuration
     .PARAMETER Context
         Portal context (e.g., https://arcgis.com/arcgis)
-    .PARAMETER Username
-        Portal username
     .PARAMETER Token
         Portal token
+    .PARAMETER SkipCertificateCheck
+        Ignore missing or invalid certificate
     .INPUTS
         None.
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> Get-PortalUser -Context 'https://arcgis.com/arcgis' -Username 'joe' -Token $token
-        Get user 'joe' from Portal
+        PS C:\> Get-PortalSecurityConfiugration -Context 'https://arcgis.com/arcgis' -Token $token
+        Get security configuration from Portal
     .NOTES
         General notes
     ========================================================================= #>
@@ -26,24 +26,23 @@ function Get-PortalUser {
         [ValidateScript({ $_.AbsoluteUri -match $context_regex })]
         [System.Uri] $Context,
 
-        [Parameter(Mandatory, HelpMessage = 'Portal username')]
-        [ValidatePattern('^[\w\.@-]+$')]
-        [System.String] $Username,
-
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
         [ValidateScript({ $_ -match $token_regex })]
-        [System.String] $Token
+        [System.String] $Token,
+
+        [Parameter(HelpMessage = 'Skip SSL certificate check')]
+        [System.Management.Automation.SwitchParameter] $SkipCertificateCheck
     )
     Process {
         $restParams = @{
-            Uri    = '{0}/sharing/rest/community/users/{1}' -f $Context, $Username
-            Method = 'POST'
+            Uri    = '{0}/portaladmin/security/config' -f $Context
+            Method = 'GET'
             Body   = @{
                 f     = 'json'
                 token = $Token
             }
         }
-
+        if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
         Invoke-RestMethod @restParams
     }
 }

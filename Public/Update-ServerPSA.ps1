@@ -50,7 +50,7 @@ function Update-ServerPSA {
                 Method  = 'POST'
                 Headers = @{ Referer = 'referer-value' }
                 Body    = @{
-                    f        = 'pjson'
+                    f        = 'json'
                     token    = $token.token
                     username = $Credential.GetNetworkCredential().UserName
                     password = $NewPassword.GetNetworkCredential().Password

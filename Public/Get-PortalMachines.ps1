@@ -38,7 +38,7 @@ function Get-PortalMachines {
             Uri    = '{0}/portaladmin/machines' -f $Context
             Method = 'GET'
             Body   = @{
-                f     = 'pjson'
+                f     = 'json'
                 token = $Token
             }
         }
