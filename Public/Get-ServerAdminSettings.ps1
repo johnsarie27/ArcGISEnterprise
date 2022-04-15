@@ -1,12 +1,13 @@
-function Get-PortalConfiguration {
+function Get-ServerAdminSetting {
     <# =========================================================================
     .SYNOPSIS
-        Get Portal configuration or "self"
+        Get ArcGIS Server admin setting
     .DESCRIPTION
-        Get Portal configuration or "self." This may also be a good test of
-        Portal token validity
+        Get ArcGIS Server admin setting
     .PARAMETER Context
         Target Portal context
+    .PARAMETER SettingUrl
+        ArcGIS Server setting URL
     .PARAMETER Token
         Portal token
     .PARAMETER SkipCertificateCheck
@@ -16,17 +17,25 @@ function Get-PortalConfiguration {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> Get-PortalConfiguration -Context 'https://arcgis.com/arcgis' -Token $token
-        Gets Portal "self" configuration
+        PS C:\> Get-ServerAdminSetting -Context https://arcgis.com/arcgis -SettingUrl 'admin/security/tokens'
+        Explanation of what the example does
     .NOTES
+        Name:      Get-ServerAdminSetting
+        Author:    Justin Johns
+        Version:   0.1.0 | Last Edit: 2022-04-15
+        - <VersionNotes> (or remove this line if no version notes)
+        Comments: <Comment(s)>
         General notes
     ========================================================================= #>
     [CmdletBinding()]
-    [Alias('Test-PortalToken')]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]
         [ValidateScript({ $_.AbsoluteUri -match $context_regex })]
         [System.Uri] $Context,
+
+        [Parameter(Mandatory, HelpMessage = 'ArcGIS Server setting URL')]
+        [ValidateNotNullOrEmpty()]
+        [System.String] $SettingUrl,
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
         [ValidateScript({ $_ -match $token_regex })]
@@ -37,8 +46,8 @@ function Get-PortalConfiguration {
     )
     Process {
         $restParams = @{
-            Uri    = '{0}/sharing/rest/portals/self' -f $Context
-            Method = 'POST'
+            Uri    = '{0}/{1}' -f $Context, $SettingUrl
+            Method = 'GET'
             Body   = @{
                 f     = 'json'
                 token = $Token
