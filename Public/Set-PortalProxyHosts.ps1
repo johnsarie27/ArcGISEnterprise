@@ -52,7 +52,7 @@ function Set-PortalProxyHosts {
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $cmnParams['SkipCertificateCheck'] = $true }
 
         # GET PORTAL SECURITY CONFIGURATION
-        $secConf = Get-PortalSecurityConfiguration @cmnParams
+        $secConf = Get-PortalSecurityConfig @cmnParams
 
         # UPDATE HERE
         $newConfig = @{
