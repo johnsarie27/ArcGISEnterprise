@@ -1,4 +1,4 @@
-function Get-ServiceInfo {
+function Get-ServerServiceInfo {
     <# =========================================================================
     .SYNOPSIS
         Get service item info
@@ -9,7 +9,7 @@ function Get-ServiceInfo {
     .PARAMETER Token
         Portal token
     .PARAMETER Service
-        Service object returned from Get-Service or Get-ServiceList
+        Service object returned from Get-Service or Get-ServerServiceList
     .PARAMETER Folder
         Folder in ArcGIS Server
     .PARAMETER SkipCertificateCheck
@@ -19,7 +19,7 @@ function Get-ServiceInfo {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> Get-ServiceInfo -Context 'https://arcgis.com/arcgis' -Token $token -Service $s
+        PS C:\> Get-ServerServiceInfo -Context 'https://arcgis.com/arcgis' -Token $token -Service $s
         Returns the service item info for service $s
     .NOTES
         General notes
@@ -34,7 +34,7 @@ function Get-ServiceInfo {
         [ValidateScript({ $_ -match $token_regex })]
         [System.String] $Token,
 
-        [Parameter(Mandatory, HelpMessage = 'Service object returned from Get-Service or Get-ServiceList')]
+        [Parameter(Mandatory, HelpMessage = 'Service object returned from Get-Service or Get-ServerServiceList')]
         [ValidateScript({$_.serviceName -and $_.type})]
         [System.Object] $Service,
 

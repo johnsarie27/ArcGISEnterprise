@@ -1,4 +1,4 @@
-function Get-ServiceList {
+function Get-ServerServiceList {
     <# =========================================================================
     .SYNOPSIS
         Get list of services from ArcGIS Server
@@ -17,7 +17,7 @@ function Get-ServiceList {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> Get-ServiceList -Context 'https://arcgis.com/arcgis' -Token $token
+        PS C:\> Get-ServerServiceList -Context 'https://arcgis.com/arcgis' -Token $token
         Returns all services in ArcGIS Server
     .NOTES
         General notes
