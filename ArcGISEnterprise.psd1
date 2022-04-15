@@ -72,7 +72,7 @@
         'Get-PortalMachines'
         'Get-PortalMachineStatus'
         'Get-PortalOAuthToken'
-        'Get-PortalSecurityConfiugration'
+        'Get-PortalSecurityConfig'
         'Get-PortalSecurityPolicy'
         'Get-PortalToken'
         'Get-PortalUser'

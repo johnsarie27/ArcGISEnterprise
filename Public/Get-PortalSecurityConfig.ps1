@@ -1,4 +1,4 @@
-function Get-PortalSecurityConfiugration {
+function Get-PortalSecurityConfig {
     <# =========================================================================
     .SYNOPSIS
         Get Portal security configuration
@@ -15,7 +15,7 @@ function Get-PortalSecurityConfiugration {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> Get-PortalSecurityConfiugration -Context 'https://arcgis.com/arcgis' -Token $token
+        PS C:\> Get-PortalSecurityConfig -Context 'https://arcgis.com/arcgis' -Token $token
         Get security configuration from Portal
     .NOTES
         General notes

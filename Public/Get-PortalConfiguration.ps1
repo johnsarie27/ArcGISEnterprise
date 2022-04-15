@@ -39,7 +39,6 @@ function Get-PortalConfiguration {
                 token = $Token
             }
         }
-
         Invoke-RestMethod @restParams
     }
 }
