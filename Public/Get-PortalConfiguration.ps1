@@ -28,7 +28,10 @@ function Get-PortalConfiguration {
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
         [ValidateScript({ $_ -match $token_regex })]
-        [System.String] $Token
+        [System.String] $Token,
+
+        [Parameter(HelpMessage = 'Skip SSL certificate check')]
+        [System.Management.Automation.SwitchParameter] $SkipCertificateCheck
     )
     Process {
         $restParams = @{
@@ -39,6 +42,7 @@ function Get-PortalConfiguration {
                 token = $Token
             }
         }
+        if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
         Invoke-RestMethod @restParams
     }
 }
