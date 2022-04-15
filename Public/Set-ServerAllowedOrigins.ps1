@@ -1,4 +1,4 @@
-function Set-ServerServicesDirectory {
+function Set-ServerAllowedOrigins {
     <# =========================================================================
     .SYNOPSIS
         Set ArcGIS Server allowed origins
@@ -17,7 +17,7 @@ function Set-ServerServicesDirectory {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> Set-ServerServicesDirectory -Origin 'https://test.com', 'https://mySite.com'
+        PS C:\> Set-ServerAllowedOrigins -Origin 'https://test.com', 'https://mySite.com'
         Sets ArcGIS Server allowed origins to 'https://test.com,https://mySite.com'
     .NOTES
         General notes
@@ -41,7 +41,7 @@ function Set-ServerServicesDirectory {
     )
     Process {
         # SET COMMON PARAMETERS
-        $cmnParams = @{ Token = $Token; Context = $Context; ErrorActon = 'Stop' }
+        $cmnParams = @{ Token = $Token; Context = $Context; ErrorAction = 'Stop' }
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $cmnParams['SkipCertificateCheck'] = $true }
 
         # GET SERVICES DIRECTORY DATA

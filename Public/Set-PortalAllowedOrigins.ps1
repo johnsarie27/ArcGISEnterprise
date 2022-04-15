@@ -21,7 +21,6 @@ function Set-PortalAllowedOrigins {
         General notes
     ========================================================================= #>
     [CmdletBinding()]
-    [Alias('Test-PortalToken')]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]
         [ValidateScript({ $_.AbsoluteUri -match $context_regex })]
