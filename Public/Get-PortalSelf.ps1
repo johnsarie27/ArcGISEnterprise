@@ -1,4 +1,4 @@
-function Get-PortalConfiguration {
+function Get-PortalSelf {
     <# =========================================================================
     .SYNOPSIS
         Get Portal configuration or "self"
@@ -16,7 +16,7 @@ function Get-PortalConfiguration {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> Get-PortalConfiguration -Context 'https://arcgis.com/arcgis' -Token $token
+        PS C:\> Get-PortalSelf -Context 'https://arcgis.com/arcgis' -Token $token
         Gets Portal "self" configuration
     .NOTES
         General notes
