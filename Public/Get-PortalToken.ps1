@@ -1,11 +1,9 @@
 function Get-PortalToken {
     <# =========================================================================
-    .SYNOPSIS
-        Generate token
     .DESCRIPTION
         Generate token for ArcGIS Portal
     .PARAMETER Context
-        Portal context (e.g., https://arcgis.com/arcgis)
+        Portal URI including context (e.g., https://arcgis.com/arcgis)
     .PARAMETER Credential
         PowerShell credential object containing username and password
     .PARAMETER Referer
@@ -26,13 +24,12 @@ function Get-PortalToken {
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory, HelpMessage = 'Target Portal URL')]
+        [Parameter(Mandatory, HelpMessage = 'Portal URI including context (e.g., https://arcgis.com/arcgis)')]
         #[Alias('Uri')]
-        #[ValidatePattern('^https?://[\w\/\.:-]+[^/]$')]
         [ValidateScript({ $_.OriginalString -match $context_regex })]
         [System.Uri] $Context,
 
-        [Parameter(Mandatory, HelpMessage = 'PS Credential object containing un and pw')]
+        [Parameter(Mandatory, HelpMessage = 'PS Credential object containing username and password')]
         [ValidateNotNullOrEmpty()]
         [System.Management.Automation.PSCredential] $Credential,
 
