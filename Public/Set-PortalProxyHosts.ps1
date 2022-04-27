@@ -66,11 +66,7 @@ function Set-PortalProxyHosts {
         $restParams = @{
             Uri    = '{0}/portaladmin/security/config/update' -f $Context
             Method = 'POST'
-            Headers = @{
-                accept         = 'text/plain'
-                referer        = $Referer
-                'content-type' = 'application/x-www-form-urlencoded'
-            }
+            Headers = @{ referer = $Referer }
             Body   = @{
                 f     = 'json'
                 token = $Token
