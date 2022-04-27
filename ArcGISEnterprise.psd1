@@ -9,7 +9,7 @@
     RootModule = 'ArcGISEnterprise.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.2.7'
+    ModuleVersion     = '0.2.8'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -67,6 +67,7 @@
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = @(
+        'Get-PortalAllowedOrigins'
         'Get-PortalIndexStatus'
         'Get-PortalMachines'
         'Get-PortalMachineStatus'
@@ -77,6 +78,7 @@
         'Get-PortalToken'
         'Get-PortalUser'
         'Get-ServerAdminSetting'
+        'Get-ServerAllowedOrigins'
         'Get-ServerPSA'
         'Get-ServerService'
         'Get-ServerServiceInfo'
