@@ -40,6 +40,6 @@ function Get-ServerAllowedOrigins {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
     }
     Process {
-        (Get-ServerServicesDirectory @PSBoundParameters).allowedOrigins
+        ((Get-ServerServicesDirectory @PSBoundParameters).allowedOrigins).Split(',')
     }
 }

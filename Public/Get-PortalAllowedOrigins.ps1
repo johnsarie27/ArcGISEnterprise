@@ -51,6 +51,6 @@ function Get-PortalAllowedOrigins {
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
         (Invoke-RestMethod @restParams).allowedOrigins #>
 
-        (Get-PortalSelf @PSBoundParameters).allowedOrigins
+        ((Get-PortalSelf @PSBoundParameters).allowedOrigins).Split(',')
     }
 }
