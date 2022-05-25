@@ -10,6 +10,8 @@ function Test-ServerHealth {
         Portal token
     .PARAMETER SkipCertificateCheck
         Ignore missing or invalid certificate
+    .PARAMETER TimeoutSec
+        Specifies how long the request can be pending before it times out
     .INPUTS
         None.
     .OUTPUTS
@@ -31,7 +33,11 @@ function Test-ServerHealth {
         [System.String] $Token,
 
         [Parameter(HelpMessage = 'Skip SSL certificate check')]
-        [System.Management.Automation.SwitchParameter] $SkipCertificateCheck
+        [System.Management.Automation.SwitchParameter] $SkipCertificateCheck,
+
+        [Parameter(HelpMessage = 'Specifies how long the request can be pending before it times out')]
+        [ValidateNotNullOrEmpty()]
+        [System.Int32] $TimeoutSec
     )
     Process {
         $restParams = @{
@@ -39,6 +45,7 @@ function Test-ServerHealth {
             Method = 'GET'
         }
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
+        if ($PSBoundParameters.ContainsKey('TimeoutSec')) { $restParams['TimeoutSec'] = $TimeoutSec }
         if ($PSBoundParameters.ContainsKey('Token')) { $restParams['Body'] = @{ token = $Token } }
         Invoke-RestMethod @restParams
     }
