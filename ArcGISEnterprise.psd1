@@ -6,10 +6,10 @@
 
 @{
     # Script module or binary module file associated with this manifest.
-    RootModule = 'ArcGISEnterprise.psm1'
+    RootModule        = 'ArcGISEnterprise.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.2.9'
+    ModuleVersion     = '0.2.10'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -27,7 +27,7 @@
     Copyright         = '(c) Justin Johns. All rights reserved.'
 
     # Description of the functionality provided by this module
-    Description = 'PowerShell module for ArcGIS Enterprise API'
+    Description       = 'PowerShell module for ArcGIS Enterprise API'
 
     # Minimum version of the PowerShell engine required by this module
     PowerShellVersion = '6.0'
@@ -69,6 +69,7 @@
     FunctionsToExport = @(
         'Get-PortalAllowedOrigins'
         'Get-PortalIndexStatus'
+        'Get-PortalLicense'
         'Get-PortalMachines'
         'Get-PortalMachineStatus'
         'Get-PortalOAuthToken'
@@ -79,6 +80,7 @@
         'Get-PortalUser'
         'Get-ServerAdminSetting'
         'Get-ServerAllowedOrigins'
+        'Get-ServerLicense'
         'Get-ServerPSA'
         'Get-ServerService'
         'Get-ServerServiceInfo'
