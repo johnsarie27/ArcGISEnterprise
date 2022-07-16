@@ -17,7 +17,7 @@ function ConvertFrom-PortalLog {
         Name:     ConvertFrom-PortalLog
         Author:   Justin Johns
         Version:  0.1.0 | Last Edit: 2022-07-14
-        - <VersionNotes> (or remove this line if no version notes)
+        - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
     ========================================================================= #>
