@@ -29,6 +29,25 @@ function ConvertFrom-IISLog {
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+
+        # SET HEADERS
+        $headers = @(
+            'date'
+            'cs_Referer'
+            'cs_ser_Agent'
+            'sc_win32_status'
+            'cs_uri_query'
+            'time'
+            'cs_uri_stem'
+            'time_taken'
+            'cs_username'
+            's_ip'
+            'sc_status'
+            'cs_method'
+            's_port'
+            'sc_substatus'
+            'c_ip'
+        )
     }
     Process {
         # PROCESS EACH LINE EXCLUDING THE HEADER
@@ -37,7 +56,7 @@ function ConvertFrom-IISLog {
             # SPLIT LINE
             $split = $line.Split(' ')
 
-            # CREATE AND OUTPUT CUSTOM OBJECT
+            <# # CREATE AND OUTPUT CUSTOM OBJECT
             [PSCustomObject] @{
                 date            = $split[0]
                 time            = $split[1]
@@ -54,7 +73,16 @@ function ConvertFrom-IISLog {
                 sc_substatus    = $split[12]
                 sc_win32_status = $split[13]
                 time_taken      = $split[14]
-            }
+            } #>
+
+            # CREATE HASHTABLE
+            $hash = @{}
+
+            # ADD PROPERTY NAME AND VALUE TO HASHTABLE
+            for ($i=0; $i -LT $headers.Count; $i++) { $hash[$headers[$i]] = $split[$i] }
+
+            # CAST HASHTABLE AS OBJECT AND OUTPUT
+            [PSCustomObject] $hash
         }
     }
 }
