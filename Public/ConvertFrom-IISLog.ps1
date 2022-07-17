@@ -7,7 +7,7 @@ function ConvertFrom-IISLog {
     .PARAMETER Path
         Path to IIS log file
     .INPUTS
-        None.
+        System.String.
     .OUTPUTS
         System.Management.Automation.PSCustomObject.
     .EXAMPLE
@@ -20,6 +20,7 @@ function ConvertFrom-IISLog {
         - 0.1.0 - Initial version
         - 0.1.1 - Updated code to skip header rows
         - 0.1.2 - Get headers from log file
+        - 0.1.3 - Added pipeline input and ordered properties
         Comments: <Comment(s)>
         General notes
     ========================================================================= #>
@@ -88,7 +89,7 @@ function ConvertFrom-IISLog {
                 } #>
 
                 # CREATE HASHTABLE
-                $hash = @{}
+                $hash = [Ordered] @{}
 
                 # ADD PROPERTY NAME AND VALUE TO HASHTABLE
                 for ($i = 0; $i -LT $headers.Count; $i++) { $hash[$headers[$i]] = $split[$i] }
