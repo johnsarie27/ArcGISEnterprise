@@ -25,21 +25,12 @@ function ConvertFrom-IISLog {
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory = $true, Position = 0, HelpMessage = 'Path to IIS log file')]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'Path to IIS log file')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.log" })]
         [System.String] $Path
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
-
-        # GET LOG CONTENT
-        $content = Get-Content -Path $Path
-
-        # GET HEADER ROW
-        $headers = $content.Where({ $_ -match '^#Fields:' })[0]
-
-        # SET HEADERS
-        $headers = $headers.Replace('#Fields: ', '').Split(' ')
 
         <# # SET HEADERS
         $headers = @(
@@ -61,10 +52,17 @@ function ConvertFrom-IISLog {
         ) #>
     }
     Process {
-        # PROCESS EACH LINE
-        foreach ($line in $content) {
 
-            # SKIP HEADER LINES THAT START WITH "#"
+        # PROCESS EACH LINE
+        foreach ($line in (Get-Content -Path $Path)) {
+
+            # GET HEADERS
+            if ($line.StartsWith('#Fields:')) {
+
+                # SET HEADERS
+                $headers = $line.Replace('#Fields: ', '').Split(' ')
+            }
+            # CREATE OBJECTS FROM DATA ROWS
             if ($line -NotMatch '^#') {
 
                 # SPLIT LINE
