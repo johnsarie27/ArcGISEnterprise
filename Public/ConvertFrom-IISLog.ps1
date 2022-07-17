@@ -16,8 +16,9 @@ function ConvertFrom-IISLog {
     .NOTES
         Name:     ConvertFrom-IISLog
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2022-07-15
+        Version:  0.1.1 | Last Edit: 2022-07-16
         - 0.1.0 - Initial version
+        - 0.1.1 - Updated code to skip header rows
         Comments: <Comment(s)>
         General notes
     ========================================================================= #>
@@ -50,39 +51,43 @@ function ConvertFrom-IISLog {
         )
     }
     Process {
-        # PROCESS EACH LINE EXCLUDING THE HEADER
-        foreach ($line in (Get-Content -Path $Path | Select-Object -Skip 4)) {
+        # PROCESS EACH LINE
+        foreach ($line in (Get-Content -Path $Path)) {
 
-            # SPLIT LINE
-            $split = $line.Split(' ')
+            # SKIP HEADER LINES THAT START WITH "#"
+            if ($line -NotMatch '^#') {
 
-            <# # CREATE AND OUTPUT CUSTOM OBJECT
-            [PSCustomObject] @{
-                date            = $split[0]
-                time            = $split[1]
-                s_ip            = $split[2]
-                cs_method       = $split[3]
-                cs_uri_stem     = $split[4]
-                cs_uri_query    = $split[5]
-                s_port          = $split[6]
-                cs_username     = $split[7]
-                c_ip            = $split[8]
-                cs_ser_Agent    = $split[9]
-                cs_Referer      = $split[10]
-                sc_status       = $split[11]
-                sc_substatus    = $split[12]
-                sc_win32_status = $split[13]
-                time_taken      = $split[14]
-            } #>
+                # SPLIT LINE
+                $split = $line.Split(' ')
 
-            # CREATE HASHTABLE
-            $hash = @{}
+                <# # CREATE AND OUTPUT CUSTOM OBJECT
+                [PSCustomObject] @{
+                    date            = $split[0]
+                    time            = $split[1]
+                    s_ip            = $split[2]
+                    cs_method       = $split[3]
+                    cs_uri_stem     = $split[4]
+                    cs_uri_query    = $split[5]
+                    s_port          = $split[6]
+                    cs_username     = $split[7]
+                    c_ip            = $split[8]
+                    cs_ser_Agent    = $split[9]
+                    cs_Referer      = $split[10]
+                    sc_status       = $split[11]
+                    sc_substatus    = $split[12]
+                    sc_win32_status = $split[13]
+                    time_taken      = $split[14]
+                } #>
 
-            # ADD PROPERTY NAME AND VALUE TO HASHTABLE
-            for ($i=0; $i -LT $headers.Count; $i++) { $hash[$headers[$i]] = $split[$i] }
+                # CREATE HASHTABLE
+                $hash = @{}
 
-            # CAST HASHTABLE AS OBJECT AND OUTPUT
-            [PSCustomObject] $hash
+                # ADD PROPERTY NAME AND VALUE TO HASHTABLE
+                for ($i = 0; $i -LT $headers.Count; $i++) { $hash[$headers[$i]] = $split[$i] }
+
+                # CAST HASHTABLE AS OBJECT AND OUTPUT
+                [PSCustomObject] $hash
+            }
         }
     }
 }
