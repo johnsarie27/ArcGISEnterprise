@@ -16,9 +16,10 @@ function ConvertFrom-IISLog {
     .NOTES
         Name:     ConvertFrom-IISLog
         Author:   Justin Johns
-        Version:  0.1.1 | Last Edit: 2022-07-16
+        Version:  0.1.2 | Last Edit: 2022-07-16
         - 0.1.0 - Initial version
         - 0.1.1 - Updated code to skip header rows
+        - 0.1.2 - Get headers from log file
         Comments: <Comment(s)>
         General notes
     ========================================================================= #>
@@ -31,7 +32,16 @@ function ConvertFrom-IISLog {
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
+        # GET LOG CONTENT
+        $content = Get-Content -Path $Path
+
+        # GET HEADER ROW
+        $headers = $content.Where({ $_ -match '^#Fields:' })[0]
+
         # SET HEADERS
+        $headers = $headers.Replace('#Fields: ', '').Split(' ')
+
+        <# # SET HEADERS
         $headers = @(
             'date'
             'cs_Referer'
@@ -48,11 +58,11 @@ function ConvertFrom-IISLog {
             's_port'
             'sc_substatus'
             'c_ip'
-        )
+        ) #>
     }
     Process {
         # PROCESS EACH LINE
-        foreach ($line in (Get-Content -Path $Path)) {
+        foreach ($line in $content) {
 
             # SKIP HEADER LINES THAT START WITH "#"
             if ($line -NotMatch '^#') {
