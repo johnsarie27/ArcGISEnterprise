@@ -7,7 +7,7 @@ function ConvertFrom-PortalLog {
     .PARAMETER Path
         Path to Portal log file
     .INPUTS
-        None.
+        System.String.
     .OUTPUTS
         System.Management.Automation.PSCustomObject.
     .EXAMPLE
@@ -16,14 +16,15 @@ function ConvertFrom-PortalLog {
     .NOTES
         Name:     ConvertFrom-PortalLog
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2022-07-14
+        Version:  0.1.0 | Last Edit: 2022-07-17
         - 0.1.0 - Initial version
+        - 0.1.1 - Added pipeline input and ordered properties
         Comments: <Comment(s)>
         General notes
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory = $true, Position = 0, HelpMessage = 'Path to Portal log file')]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'Path to Portal log file')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf })]
         [System.String] $Path
     )
@@ -38,7 +39,7 @@ function ConvertFrom-PortalLog {
             $l = ([System.Xml.XmlDocument] $line).Msg
 
             # CREATE AND OUTPUT CUSTOM OBJECT FOR LOG ENTRY
-            [PSCustomObject] @{
+            [PSCustomObject] [Ordered] @{
                 time       = $l.time
                 type       = $l.type
                 code       = $l.code
