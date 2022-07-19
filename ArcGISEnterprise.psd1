@@ -9,7 +9,7 @@
     RootModule        = 'ArcGISEnterprise.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.2.13'
+    ModuleVersion     = '0.3.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -78,6 +78,7 @@
         'Get-PortalOAuthToken'
         'Get-PortalSecurityConfig'
         'Get-PortalSecurityPolicy'
+        'Get-PortalRole'
         'Get-PortalSelf'
         'Get-PortalToken'
         'Get-PortalUser'
@@ -90,8 +91,10 @@
         'Get-ServerServiceList'
         'Get-ServerServicesDirectory'
         'Get-ServerToken'
+        'New-PortalRole'
         'Set-PortalAllowedOrigins'
         'Set-PortalProxyHosts'
+        'Set-PortalRolePrivilege'
         'Set-ServerAllowedOrigins'
         'Test-PortalFederation'
         'Test-PortalHealth'
