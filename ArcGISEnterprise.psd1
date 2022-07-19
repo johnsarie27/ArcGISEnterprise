@@ -92,6 +92,7 @@
         'Get-ServerServicesDirectory'
         'Get-ServerToken'
         'New-PortalRole'
+        'Remove-PortalRole'
         'Set-PortalAllowedOrigins'
         'Set-PortalProxyHosts'
         'Set-PortalRolePrivilege'
