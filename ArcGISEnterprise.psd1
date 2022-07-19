@@ -69,7 +69,7 @@
     FunctionsToExport = @(
         'ConvertFrom-Epoch'
         'ConvertFrom-IISLog'
-        'ConvertFrom-PortalLog'
+        'ConvertFrom-ArcGISLog'
         'Get-PortalAllowedOrigins'
         'Get-PortalIndexStatus'
         'Get-PortalLicense'
