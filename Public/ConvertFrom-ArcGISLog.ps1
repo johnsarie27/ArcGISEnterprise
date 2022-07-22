@@ -16,10 +16,11 @@ function ConvertFrom-ArcGISLog {
     .NOTES
         Name:     ConvertFrom-ArcGISLog
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2022-07-17
+        Version:  0.1.3 | Last Edit: 2022-07-21
         - 0.1.0 - Initial version
         - 0.1.1 - Added pipeline input and ordered properties
         - 0.1.2 - Added support for ArcGIS Server logs and renamed function
+        - 0.1.3 - Updated logic with try/catch for XML parsing errors
         Comments: <Comment(s)>
         General notes
     ========================================================================= #>
@@ -36,15 +37,11 @@ function ConvertFrom-ArcGISLog {
         # GET CONTENT OF LOG FILE
         foreach ($line in (Get-Content -Path $Path)) {
 
-            # CHECK FOR MALFORMED LOG ENTRY
-            if (-Not $line.StartsWith('<Msg')) {
-                Write-Verbose -Message ('Log entry invalid "{0}"' -f $line)
-            }
-            else {
-                # IF LINE DOES EMD WITH CLOSING TAG APPEND CORRECT TAG
-                if (-Not $line.EndsWith('</Msg>')) { $line += '</Msg>' }
+            # IF LINE DOES EMD WITH CLOSING TAG APPEND CORRECT TAG
+            if (-Not $line.EndsWith('</Msg>')) { $line += '</Msg>' }
 
-                # CONVERT LINE TO XMLS
+            try {
+                # CONVERT LINE TO XMLS OR CATCH ERROR
                 $l = ([System.Xml.XmlDocument] $line).Msg
 
                 # CREATE AND OUTPUT CUSTOM OBJECT FOR LOG ENTRY
@@ -62,6 +59,9 @@ function ConvertFrom-ArcGISLog {
                     requestID  = $l.requestID
                     message    = $l.'#text'
                 }
+            }
+            catch {
+                Write-Warning -Message ('Invalid log entry "{0}"' -f $line)
             }
         }
     }
