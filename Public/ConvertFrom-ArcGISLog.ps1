@@ -16,7 +16,7 @@ function ConvertFrom-ArcGISLog {
     .NOTES
         Name:     ConvertFrom-ArcGISLog
         Author:   Justin Johns
-        Version:  0.1.3 | Last Edit: 2022-07-21
+        Version:  0.1.3 | Last Edit: 2022-07-22
         - 0.1.0 - Initial version
         - 0.1.1 - Added pipeline input and ordered properties
         - 0.1.2 - Added support for ArcGIS Server logs and renamed function
@@ -41,10 +41,12 @@ function ConvertFrom-ArcGISLog {
             if (-Not $line.EndsWith('</Msg>')) { $line += '</Msg>' }
 
             try {
-                # CONVERT LINE TO XMLS OR CATCH ERROR
+                # CONVERT LINE TO XML OR CATCH ERROR
                 $l = ([System.Xml.XmlDocument] $line).Msg
 
-                # CREATE AND OUTPUT CUSTOM OBJECT FOR LOG ENTRY
+                # OBJECT CREATION SHOULD STAY IN THE TRY BLOCK SO THAT ANY FAILURE
+                # IN THE XML CONVERSION WILL TERMINATE THE ENTIRE LINE RATHER THAN
+                # CREATING A NEW OBJECT WITH THE PREVIOUS LINE DATA
                 [PSCustomObject] [Ordered] @{
                     time       = $l.time
                     type       = $l.type
