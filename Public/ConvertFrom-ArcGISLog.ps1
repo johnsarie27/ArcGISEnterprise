@@ -16,11 +16,12 @@ function ConvertFrom-ArcGISLog {
     .NOTES
         Name:     ConvertFrom-ArcGISLog
         Author:   Justin Johns
-        Version:  0.1.3 | Last Edit: 2022-07-22
+        Version:  0.1.4 | Last Edit: 2022-07-28
         - 0.1.0 - Initial version
         - 0.1.1 - Added pipeline input and ordered properties
         - 0.1.2 - Added support for ArcGIS Server logs and renamed function
         - 0.1.3 - Updated logic with try/catch for XML parsing errors
+        - 0.1.4 - Added support for dynamic columns
         Comments: <Comment(s)>
         General notes
     ========================================================================= #>
@@ -35,7 +36,12 @@ function ConvertFrom-ArcGISLog {
     }
     Process {
         # GET CONTENT OF LOG FILE
-        foreach ($line in (Get-Content -Path $Path)) {
+        $content = Get-Content -Path $Path
+
+        # GET HEADERS
+        $headers = (([System.Xml.XmlDocument] $content[0]).Msg | Get-Member -MemberType Property).Name
+
+        foreach ($line in $content) {
 
             # IF LINE DOES EMD WITH CLOSING TAG APPEND CORRECT TAG
             if (-Not $line.EndsWith('</Msg>')) { $line += '</Msg>' }
@@ -44,25 +50,22 @@ function ConvertFrom-ArcGISLog {
                 # CONVERT LINE TO XML OR CATCH ERROR
                 $l = ([System.Xml.XmlDocument] $line).Msg
 
-                # OBJECT CREATION SHOULD STAY IN THE TRY BLOCK SO THAT ANY FAILURE
-                # IN THE XML CONVERSION WILL TERMINATE THE ENTIRE LINE RATHER THAN
-                # CREATING A NEW OBJECT WITH THE PREVIOUS LINE DATA
-                [PSCustomObject] [Ordered] @{
-                    time       = $l.time
-                    type       = $l.type
-                    code       = $l.code
-                    source     = $l.source
-                    process    = $l.process
-                    thread     = $l.thread
-                    methodName = $l.methodName
-                    machine    = $l.machine
-                    user       = $l.user
-                    elapsed    = $l.elapsed
-                    requestID  = $l.requestID
-                    message    = $l.'#text'
+                # CREATE HASHTABLE
+                $hash = [Ordered] @{}
+
+                # ADD PROPERTY NAME AND VALUE TO HASHTABLE
+                for ($i = 0; $i -LT $headers.Count; $i++) {
+
+                    if ($headers[$i] -EQ '#text') { $hash['message'] = $l.'#text' }
+                    else { $hash[$headers[$i]] = $l.GetAttribute($headers[$i]) }
                 }
+
+                # CAST HASHTABLE AS OBJECT AND OUTPUT
+                [PSCustomObject] $hash
             }
             catch {
+                # THE CONVERSION ERRORS CAN BE VIEWED BY USING "-ErrorVariable" PARAMETER
+                #Write-Warning -Message ('{0}' -f $_.Exception.Message)
                 Write-Warning -Message ('Invalid log entry "{0}"' -f $line)
             }
         }
