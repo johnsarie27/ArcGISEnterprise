@@ -48,7 +48,7 @@ function ConvertFrom-ArcGISLog {
 
             try {
                 # CONVERT LINE TO XML OR CATCH ERROR
-                $l = ([System.Xml.XmlDocument] $line).Msg
+                $xml = ([System.Xml.XmlDocument] $line).Msg
 
                 # CREATE HASHTABLE
                 $hash = [Ordered] @{}
@@ -56,8 +56,8 @@ function ConvertFrom-ArcGISLog {
                 # ADD PROPERTY NAME AND VALUE TO HASHTABLE
                 for ($i = 0; $i -LT $headers.Count; $i++) {
 
-                    if ($headers[$i] -EQ '#text') { $hash['message'] = $l.'#text' }
-                    else { $hash[$headers[$i]] = $l.GetAttribute($headers[$i]) }
+                    if ($headers[$i] -EQ '#text') { $hash['message'] = $xml.'#text' }
+                    else { $hash[$headers[$i]] = $xml.GetAttribute($headers[$i]) }
                 }
 
                 # CAST HASHTABLE AS OBJECT AND OUTPUT
