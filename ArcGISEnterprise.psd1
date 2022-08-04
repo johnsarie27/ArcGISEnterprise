@@ -84,7 +84,7 @@
         'Get-PortalUser'
         'Get-ServerAdminSetting'
         'Get-ServerAllowedOrigins'
-        'Get-ServerGPService'
+        'Get-ServerGPServer'
         'Get-ServerLicense'
         'Get-ServerPSA'
         'Get-ServerService'

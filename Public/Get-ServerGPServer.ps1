@@ -1,4 +1,4 @@
-function Get-ServerGPService {
+function Get-ServerGPServer {
     <# =========================================================================
     .SYNOPSIS
         Get ArcGIS Server GP Service
