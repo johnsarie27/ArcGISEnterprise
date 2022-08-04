@@ -9,7 +9,7 @@
     RootModule        = 'ArcGISEnterprise.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.3.1'
+    ModuleVersion     = '0.3.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -84,7 +84,6 @@
         'Get-PortalUser'
         'Get-ServerAdminSetting'
         'Get-ServerAllowedOrigins'
-        'Get-ServerGPServer'
         'Get-ServerLicense'
         'Get-ServerPSA'
         'Get-ServerService'
