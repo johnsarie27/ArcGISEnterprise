@@ -26,11 +26,11 @@ function Get-ServerServiceInfo {
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory, HelpMessage = 'Target Portal context')]
+        [Parameter(Mandatory, Position = 0, HelpMessage = 'Target Portal context')]
         [ValidateScript({ $_.AbsoluteUri -match $context_regex })]
         [System.Uri] $Context,
 
-        [Parameter(Mandatory, HelpMessage = 'Portal token')]
+        [Parameter(HelpMessage = 'Portal token')]
         [ValidateScript({ $_ -match $token_regex })]
         [System.String] $Token,
 
@@ -46,6 +46,7 @@ function Get-ServerServiceInfo {
         [System.Management.Automation.SwitchParameter] $SkipCertificateCheck
     )
     Process {
+        # SET URI PATH
         if ($PSBoundParameters.ContainsKey('Folder')) {
             $uri = '{0}/admin/services/{1}/{2}.{3}/iteminfo' -f $Context, $Folder, $Service.serviceName, $Service.type
         }
@@ -53,15 +54,20 @@ function Get-ServerServiceInfo {
             $uri = '{0}/admin/services/{1}.{2}/iteminfo' -f $Context, $Service.serviceName, $Service.type
         }
 
+        # SET REQUEST PARAMETERS
         $restParams = @{
             Uri    = $uri
             Method = 'GET'
-            Body   = @{
-                f     = 'json'
-                token = $Token
-            }
+            Body   = @{ f = 'json' }
         }
+
+        # ADD TOKEN IF PROVIDED
+        if ($PSBoundParameters.ContainsKey('Token')) { $restParams.Body['token'] = $Token }
+
+        # ADD CERTIFICATE SKIP IF PROVIDED
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
+
+        # SEND REQUEST
         Invoke-RestMethod @restParams
     }
 }
