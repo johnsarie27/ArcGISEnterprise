@@ -24,11 +24,11 @@ function Get-ServerServiceList {
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory, HelpMessage = 'Target Portal context')]
+        [Parameter(Position = 0, Mandatory, HelpMessage = 'Target Portal context')]
         [ValidateScript({ $_.AbsoluteUri -match $context_regex })]
         [System.Uri] $Context,
 
-        [Parameter(Mandatory, HelpMessage = 'Portal token')]
+        [Parameter(HelpMessage = 'Portal token')]
         [ValidateScript({ $_ -match $token_regex })]
         [System.String] $Token,
 
@@ -40,18 +40,24 @@ function Get-ServerServiceList {
         [System.Management.Automation.SwitchParameter] $SkipCertificateCheck
     )
     Process {
+        # SET SERVICES URI
         if ($PSBoundParameters.ContainsKey('Folder')) { $uri = '{0}/admin/services/{1}' -f $Context, $Folder }
         else { $uri = '{0}/admin/services' -f $Context }
 
+        # SET REQUEST PARAMETERS
         $restParams = @{
             Uri    = $uri
             Method = 'GET'
-            Body   = @{
-                f     = 'json'
-                token = $Token
-            }
+            Body   = @{ f = 'json' }
         }
+
+        # ADD TOKEN IF PROVIDED
+        if ($PSBoundParameters.ContainsKey('Token')) { $restParams.Body['token'] = $Token }
+
+        # ADD CERTIFICATE SKIP IF PROVIDED
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
+
+        # SEND REQUEST
         Invoke-RestMethod @restParams
     }
 }
