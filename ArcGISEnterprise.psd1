@@ -9,7 +9,7 @@
     RootModule        = 'ArcGISEnterprise.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.3.1'
+    ModuleVersion     = '0.3.5'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -71,6 +71,7 @@
         'ConvertFrom-IISLog'
         'ConvertFrom-ArcGISLog'
         'Get-PortalAllowedOrigins'
+        'Get-PortalGroupUserList'
         'Get-PortalIndexStatus'
         'Get-PortalLicense'
         'Get-PortalMachines'
@@ -82,6 +83,9 @@
         'Get-PortalSelf'
         'Get-PortalToken'
         'Get-PortalUser'
+        'Get-PortalUserGroup'
+        'Get-PortalUserItem'
+        'Get-PortalUserList'
         'Get-ServerAdminSetting'
         'Get-ServerAllowedOrigins'
         'Get-ServerLicense'
