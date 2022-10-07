@@ -76,7 +76,7 @@ function Get-PortalUserList {
 
             do {
 
-                Write-Verbose -Message ('Rmaining users: {0}' -f $remainingUsers)
+                Write-Verbose -Message ('Remaining users: {0}' -f $remainingUsers)
 
                 # RESET START
                 $restParams.Body['start'] = $rest.nextStart
