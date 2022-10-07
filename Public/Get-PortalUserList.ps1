@@ -25,6 +25,7 @@ function Get-PortalUserList {
         - 0.1.1 - Makes multiple requests to get all users if more than 100
         Comments: <Comment(s)>
         General notes
+        https://developers.arcgis.com/rest/users-groups-and-items/users.htm
     ========================================================================= #>
     [CmdletBinding()]
     Param(
