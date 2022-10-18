@@ -20,9 +20,10 @@ function Get-PortalUserList {
     .NOTES
         Name:     Get-PortalUserList
         Author:   Justin Johns
-        Version:  0.1.1 | Last Edit: 2022-10-06
+        Version:  0.1.2 | Last Edit: 2022-10-17
         - 0.1.0 - Initial version
         - 0.1.1 - Makes multiple requests to get all users if more than 100
+        - 0.1.2 - Changed array to generic list
         Comments: <Comment(s)>
         General notes
         https://developers.arcgis.com/rest/users-groups-and-items/users.htm
@@ -48,7 +49,7 @@ function Get-PortalUserList {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
         # CREATE USER ARRAY
-        $userList = @()
+        $userList = [System.Collections.Generic.List[System.Object]]::new()
     }
     Process {
         # SET PARAMETERS
@@ -65,7 +66,7 @@ function Get-PortalUserList {
         $rest = Invoke-RestMethod @restParams
 
         # ADD USER TO ARRAY
-        $userList += $rest.users
+        foreach ($u in $rest.users) { $userList.Add($u) | Out-Null }
 
         # SET REMAINING USERS
         $remainingUsers = $rest.total - 100
@@ -85,7 +86,7 @@ function Get-PortalUserList {
                 $rest = Invoke-RestMethod @restParams
 
                 # ADD USER TO ARRAY
-                $userList += $rest.users
+                foreach ($u in $rest.users) { $userList.Add($u) | Out-Null }
 
                 # DECREMENT REMAINING USERS
                 $remainingUsers -= 100
