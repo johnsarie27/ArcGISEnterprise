@@ -16,11 +16,12 @@ function ConvertFrom-IISLog {
     .NOTES
         Name:     ConvertFrom-IISLog
         Author:   Justin Johns
-        Version:  0.1.2 | Last Edit: 2022-07-16
-        - 0.1.0 - Initial version
-        - 0.1.1 - Updated code to skip header rows
-        - 0.1.2 - Get headers from log file
+        Version:  0.1.4 | Last Edit: 2022-11-13
+        - 0.1.4 - Code clean
         - 0.1.3 - Added pipeline input and ordered properties
+        - 0.1.2 - Get headers from log file
+        - 0.1.1 - Updated code to skip header rows
+        - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
     ========================================================================= #>
@@ -32,25 +33,6 @@ function ConvertFrom-IISLog {
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
-
-        <# # SET HEADERS
-        $headers = @(
-            'date'
-            'cs_Referer'
-            'cs_ser_Agent'
-            'sc_win32_status'
-            'cs_uri_query'
-            'time'
-            'cs_uri_stem'
-            'time_taken'
-            'cs_username'
-            's_ip'
-            'sc_status'
-            'cs_method'
-            's_port'
-            'sc_substatus'
-            'c_ip'
-        ) #>
     }
     Process {
 
@@ -69,30 +51,11 @@ function ConvertFrom-IISLog {
                 # SPLIT LINE
                 $split = $line.Split(' ')
 
-                <# # CREATE AND OUTPUT CUSTOM OBJECT
-                [PSCustomObject] @{
-                    date            = $split[0]
-                    time            = $split[1]
-                    s_ip            = $split[2]
-                    cs_method       = $split[3]
-                    cs_uri_stem     = $split[4]
-                    cs_uri_query    = $split[5]
-                    s_port          = $split[6]
-                    cs_username     = $split[7]
-                    c_ip            = $split[8]
-                    cs_ser_Agent    = $split[9]
-                    cs_Referer      = $split[10]
-                    sc_status       = $split[11]
-                    sc_substatus    = $split[12]
-                    sc_win32_status = $split[13]
-                    time_taken      = $split[14]
-                } #>
-
                 # CREATE HASHTABLE
                 $hash = [Ordered] @{}
 
                 # ADD PROPERTY NAME AND VALUE TO HASHTABLE
-                for ($i = 0; $i -LT $headers.Count; $i++) { $hash[$headers[$i]] = $split[$i] }
+                for ($i = 0; $i -LT $headers.Count; $i++) { $hash.Add($headers[$i], $split[$i]) }
 
                 # CAST HASHTABLE AS OBJECT AND OUTPUT
                 [PSCustomObject] $hash
