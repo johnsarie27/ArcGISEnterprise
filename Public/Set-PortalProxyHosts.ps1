@@ -23,6 +23,12 @@ function Set-PortalProxyHosts {
         PS C:\> Set-PortalSecurityConfiugration -ProxyHost 'test.com' @cmn
         Set Portal allowedProxyHosts to 'test.com'
     .NOTES
+        Name:     Set-PortalProxyHosts
+        Author:   Justin Johns
+        Version:  0.1.1 | Last Edit: 2023-01-04
+        - 0.1.1 - Fixed defect that removes several existing properties
+        - 0.1.0 - Initial version
+        Comments: <Comment(s)>
         General notes
     ========================================================================= #>
     [CmdletBinding()]
@@ -54,15 +60,17 @@ function Set-PortalProxyHosts {
         # GET PORTAL SECURITY CONFIGURATION
         $secConf = Get-PortalSecurityConfig @cmnParams
 
-        # UPDATE HERE
-        $newConfig = @{
-            allowedProxyHosts              = ($ProxyHost -join ',')
-            enableAutomaticAccountCreation = $secConf.enableAutomaticAccountCreation
-            disableServicesDirectory       = $secConf.disableServicesDirectory
-        }
+        # RETAIN ORIGINAL PROPERTIES
+        $newConfig = @{}; $members = $secConf.psobject.Members.Where({$_.MemberType -EQ 'NoteProperty'})
+        foreach ($mbr in $members) { $newConfig[$mbr.Name] = $mbr.Value }
 
+        # ADD ALLOWED PROXY HOSTS
+        $newConfig.Add('allowedProxyHosts', ($ProxyHost -join ','))
+
+        # SET REFERER
         $Referer = if ($PSBoundParameters.ContainsKey('Referer')) { $Referer } else { '{0}://{1}' -f $Context.Scheme, $Context.Authority }
 
+        # SET REST PARAMETERS
         $restParams = @{
             Uri    = '{0}/portaladmin/security/config/update' -f $Context
             Method = 'POST'
