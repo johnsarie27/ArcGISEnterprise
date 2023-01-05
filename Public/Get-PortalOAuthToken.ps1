@@ -1,5 +1,5 @@
 function Get-PortalOAuthToken {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Portal OAuth token
     .DESCRIPTION
@@ -19,7 +19,7 @@ function Get-PortalOAuthToken {
         Get OAuth token for Portal application
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

@@ -1,5 +1,5 @@
 function ConvertFrom-IISLog {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Convert from IIS log
     .DESCRIPTION
@@ -24,7 +24,7 @@ function ConvertFrom-IISLog {
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'Path to IIS log file')]

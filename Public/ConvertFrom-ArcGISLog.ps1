@@ -1,5 +1,5 @@
 function ConvertFrom-ArcGISLog {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Convert from ArcGIS log
     .DESCRIPTION
@@ -24,7 +24,7 @@ function ConvertFrom-ArcGISLog {
         - 0.1.4 - Added support for dynamic columns
         Comments: <Comment(s)>
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'Path to log file')]

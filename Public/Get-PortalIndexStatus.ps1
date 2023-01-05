@@ -1,5 +1,5 @@
 function Get-PortalIndexStatus {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Portal index status
     .DESCRIPTION
@@ -19,7 +19,7 @@ function Get-PortalIndexStatus {
         Get status of Portal indexes
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

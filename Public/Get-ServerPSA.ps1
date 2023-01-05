@@ -1,5 +1,5 @@
 function Get-ServerPSA {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Portal user
     .DESCRIPTION
@@ -10,6 +10,8 @@ function Get-ServerPSA {
         Portal username
     .PARAMETER Token
         Portal token
+    .PARAMETER Referer
+        Portal referer
     .INPUTS
         None.
     .OUTPUTS
@@ -19,7 +21,7 @@ function Get-ServerPSA {
         Get PSA user from Server
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

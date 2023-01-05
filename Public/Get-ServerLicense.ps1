@@ -1,5 +1,5 @@
 function Get-ServerLicense {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get ArcGIS Server license
     .DESCRIPTION
@@ -19,7 +19,7 @@ function Get-ServerLicense {
         Returns ArcGIS Server license info
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

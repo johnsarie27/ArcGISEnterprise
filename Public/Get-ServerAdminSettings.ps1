@@ -1,5 +1,5 @@
 function Get-ServerAdminSetting {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get ArcGIS Server admin setting
     .DESCRIPTION
@@ -26,7 +26,7 @@ function Get-ServerAdminSetting {
         - <VersionNotes> (or remove this line if no version notes)
         Comments: <Comment(s)>
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

@@ -1,5 +1,5 @@
 function Test-PortalFederation {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Validate Portal federation status
     .DESCRIPTION
@@ -19,7 +19,7 @@ function Test-PortalFederation {
         Validates status of Portal's ArcGIS Servers
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

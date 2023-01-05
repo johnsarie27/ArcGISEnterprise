@@ -1,5 +1,5 @@
 function Get-PortalToken {
-    <# =========================================================================
+    <#
     .DESCRIPTION
         Generate token for ArcGIS Portal
     .PARAMETER Context
@@ -21,7 +21,7 @@ function Get-PortalToken {
         Generate token for mydomain.com
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Portal URI including context (e.g., https://arcgis.com/arcgis)')]

@@ -1,5 +1,5 @@
 function Update-PortalPSA {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Update Portal for ArcGIS PSA Account
     .DESCRIPTION
@@ -8,7 +8,7 @@ function Update-PortalPSA {
         Portal context (e.g., https://arcgis.com/arcgis)
     .PARAMETER Credential
         PSCredential object containing current username and password
-    .PARAMETER NewPassowrd
+    .PARAMETER NewPassword
         PSCredential object containing new password
     .INPUTS
         None.
@@ -19,7 +19,7 @@ function Update-PortalPSA {
         Explanation of what the example does
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Portal base URI (a.k.a., context)')]

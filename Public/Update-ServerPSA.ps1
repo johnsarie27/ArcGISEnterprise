@@ -1,5 +1,5 @@
 function Update-ServerPSA {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Update ArcGIS Server PSA Account
     .DESCRIPTION
@@ -8,7 +8,7 @@ function Update-ServerPSA {
         ArcGIS Server context (e.g., https://arcgis.com/arcgis)
     .PARAMETER Credential
         PSCredential object containing current username and password
-    .PARAMETER NewPassowrd
+    .PARAMETER NewPassword
         PSCredential object containing new password
     .INPUTS
         None.
@@ -22,7 +22,7 @@ function Update-ServerPSA {
         https://developers.arcgis.com/rest/enterprise-administration/server/psa.htm
         https://developers.arcgis.com/rest/enterprise-administration/server/updatepsa.htm
         https://developers.arcgis.com/rest/users-groups-and-items/update-user.htm
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Server base URI (a.k.a., context)')]

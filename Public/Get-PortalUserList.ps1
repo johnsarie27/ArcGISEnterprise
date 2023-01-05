@@ -1,5 +1,5 @@
 function Get-PortalUserList {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Portal user list
     .DESCRIPTION
@@ -10,6 +10,8 @@ function Get-PortalUserList {
         Portal context (e.g., https://arcgis.com/arcgis)
     .PARAMETER Token
         Portal token
+    .PARAMETER SkipCertificateCheck
+        Ignore missing or invalid certificate
     .INPUTS
         None.
     .OUTPUTS
@@ -27,7 +29,7 @@ function Get-PortalUserList {
         Comments: <Comment(s)>
         General notes
         https://developers.arcgis.com/rest/users-groups-and-items/users.htm
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(HelpMessage = 'Portal ID')]

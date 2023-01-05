@@ -1,5 +1,5 @@
 function New-PortalRole {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Create new Role in Portal for ArcGIS
     .DESCRIPTION
@@ -31,7 +31,7 @@ function New-PortalRole {
         Comments: <Comment(s)>
         General notes
         https://developers.arcgis.com/rest/users-groups-and-items/create-role.htm
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Portal role name')]

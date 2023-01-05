@@ -1,5 +1,5 @@
 function Get-ServerToken {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Generate token
     .DESCRIPTION
@@ -29,7 +29,7 @@ function Get-ServerToken {
         -- SERVER ENDPONITS --
         https://myDomain.com/arcgis/admin/login
         https://myDomain.com/arcgis/admin/generateToken
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal URL')]

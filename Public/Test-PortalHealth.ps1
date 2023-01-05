@@ -1,5 +1,5 @@
 function Test-PortalHealth {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Test Portal health
     .DESCRIPTION
@@ -21,7 +21,7 @@ function Test-PortalHealth {
         Send a request to the Portal heealth check endpoint
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

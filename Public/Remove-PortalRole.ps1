@@ -1,5 +1,5 @@
 function Remove-PortalRole {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Remove Role in Portal for ArcGIS
     .DESCRIPTION
@@ -29,7 +29,7 @@ function Remove-PortalRole {
         Comments: <Comment(s)>
         General notes
         https://developers.arcgis.com/rest/users-groups-and-items/delete-role.htm
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Portal Role ID')]

@@ -1,5 +1,5 @@
 function Get-ServerServiceList {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get list of services from ArcGIS Server
     .DESCRIPTION
@@ -21,7 +21,7 @@ function Get-ServerServiceList {
         Returns all services in ArcGIS Server
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Position = 0, Mandatory, HelpMessage = 'Target Portal context')]

@@ -1,5 +1,5 @@
 function Get-PortalSecurityConfig {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Portal security configuration
     .DESCRIPTION
@@ -19,7 +19,7 @@ function Get-PortalSecurityConfig {
         Get security configuration from Portal
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

@@ -1,5 +1,5 @@
 function Get-PortalUser {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Portal user
     .DESCRIPTION
@@ -19,7 +19,7 @@ function Get-PortalUser {
         Get user 'joe' from Portal
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

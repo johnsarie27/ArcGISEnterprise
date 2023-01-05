@@ -1,5 +1,5 @@
 function Set-PortalAllowedOrigins {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Set the allowed origins property for Portal
     .DESCRIPTION
@@ -21,7 +21,7 @@ function Set-PortalAllowedOrigins {
         Sets the allowed origins property to 'https://arcgis.com,https://test.com'
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

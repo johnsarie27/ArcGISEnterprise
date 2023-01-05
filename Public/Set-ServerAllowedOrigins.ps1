@@ -1,5 +1,5 @@
 function Set-ServerAllowedOrigins {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Set ArcGIS Server allowed origins
     .DESCRIPTION
@@ -27,7 +27,7 @@ function Set-ServerAllowedOrigins {
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

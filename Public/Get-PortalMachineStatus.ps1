@@ -1,5 +1,5 @@
 function Get-PortalMachineStatus {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Portal machine status
     .DESCRIPTION
@@ -21,7 +21,7 @@ function Get-PortalMachineStatus {
         Get status of Portal system
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

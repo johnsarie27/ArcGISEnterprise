@@ -1,5 +1,5 @@
 function Get-PortalAllowedOrigins {
-    <# =========================================================================
+    <#
     .DESCRIPTION
         Get the allowed origins configured for ArcGIS Portal
     .PARAMETER Context
@@ -22,7 +22,7 @@ function Get-PortalAllowedOrigins {
         Version:  0.1.0 | Last Edit: 2022-04-27
         Comments: <Comment(s)>
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

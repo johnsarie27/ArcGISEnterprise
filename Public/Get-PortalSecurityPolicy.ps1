@@ -1,5 +1,5 @@
 function Get-PortalSecurityPolicy {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Portal security policy
     .DESCRIPTION
@@ -8,6 +8,8 @@ function Get-PortalSecurityPolicy {
         Target Portal context
     .PARAMETER Token
         Portal token
+    .PARAMETER Id
+        Portal internal ID
     .INPUTS
         None.
     .OUTPUTS
@@ -17,7 +19,7 @@ function Get-PortalSecurityPolicy {
         Get security policy for Portal user
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     [Alias('Get-SecurityPolicy')]
     Param(

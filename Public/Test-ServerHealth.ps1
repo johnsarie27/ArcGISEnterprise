@@ -1,5 +1,5 @@
 function Test-ServerHealth {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Test Server health
     .DESCRIPTION
@@ -21,7 +21,7 @@ function Test-ServerHealth {
         Send a request to the ArcGIS Server heealth check endpoint
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target ArcGIS Server context')]

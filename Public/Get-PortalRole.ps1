@@ -1,5 +1,5 @@
 function Get-PortalRole {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Portal for ArcGIS Role
     .DESCRIPTION
@@ -27,7 +27,7 @@ function Get-PortalRole {
         Comments: <Comment(s)>
         General notes
         https://developers.arcgis.com/rest/users-groups-and-items/roles.htm
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(HelpMessage = 'Portal ID')]

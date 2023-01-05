@@ -1,5 +1,5 @@
 function Set-PortalRolePrivilege {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Set privilege for Portal for ArcGIS Role
     .DESCRIPTION
@@ -31,7 +31,7 @@ function Set-PortalRolePrivilege {
         Comments: <Comment(s)>
         General notes
         https://developers.arcgis.com/rest/users-groups-and-items/set-role-privileges.htm
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Portal Role ID')]

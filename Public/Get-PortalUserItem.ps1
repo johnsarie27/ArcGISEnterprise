@@ -1,5 +1,5 @@
 function Get-PortalUserItem {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Portal for ArcGIS user item
     .DESCRIPTION
@@ -10,6 +10,8 @@ function Get-PortalUserItem {
         Portal context (e.g., https://arcgis.com/arcgis)
     .PARAMETER Token
         Portal token
+    .PARAMETER SkipCertificateCheck
+        Ignore missing or invalid certificate
     .INPUTS
         None.
     .OUTPUTS
@@ -24,7 +26,7 @@ function Get-PortalUserItem {
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Username')]

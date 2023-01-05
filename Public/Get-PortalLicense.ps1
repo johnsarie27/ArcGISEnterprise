@@ -1,5 +1,5 @@
 function Get-PortalLicense {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Portal license
     .DESCRIPTION
@@ -19,7 +19,7 @@ function Get-PortalLicense {
         Get license information from Portal
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

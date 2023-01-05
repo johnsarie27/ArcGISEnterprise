@@ -1,5 +1,5 @@
 function Get-ServerServicesDirectory {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get ArcGIS Server services directory
     .DESCRIPTION
@@ -19,7 +19,7 @@ function Get-ServerServicesDirectory {
         Returns ArcGIS Server services directory content
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

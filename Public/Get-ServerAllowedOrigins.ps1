@@ -1,5 +1,5 @@
 function Get-ServerAllowedOrigins {
-    <# =========================================================================
+    <#
     .DESCRIPTION
         Get the allowed origins for ArcGIS Server
     .PARAMETER Context
@@ -22,7 +22,7 @@ function Get-ServerAllowedOrigins {
         Version:  0.1.0 | Last Edit: 2022-04-27 [0.1.0]
         Comments: <Comment(s)>
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

@@ -1,5 +1,5 @@
 function Get-PortalMachines {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Portal machines
     .DESCRIPTION
@@ -19,7 +19,7 @@ function Get-PortalMachines {
         Get user from Portal
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

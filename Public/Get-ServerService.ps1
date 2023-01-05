@@ -1,5 +1,5 @@
 function Get-ServerService {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get ArcGIS service
     .DESCRIPTION
@@ -25,7 +25,7 @@ function Get-ServerService {
         Returns the service object for the SampleWorldCities service
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     [Alias('Get-AGSService')]
     Param(

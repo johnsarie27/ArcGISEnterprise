@@ -1,5 +1,5 @@
 function Get-ServerServiceInfo {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get service item info
     .DESCRIPTION
@@ -23,7 +23,7 @@ function Get-ServerServiceInfo {
         Returns the service item info for service $s
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, Position = 0, HelpMessage = 'Target Portal context')]

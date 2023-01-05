@@ -1,5 +1,5 @@
 function ConvertFrom-Epoch {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Convert from Epoch to DateTime
     .DESCRIPTION
@@ -20,7 +20,7 @@ function ConvertFrom-Epoch {
         - <VersionNotes> (or remove this line if no version notes)
         Comments: <Comment(s)>
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     [OutputType([System.DateTime])]
     Param(

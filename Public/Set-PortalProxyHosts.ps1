@@ -1,5 +1,5 @@
 function Set-PortalProxyHosts {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Set Portal security configuration
     .DESCRIPTION
@@ -31,7 +31,7 @@ function Set-PortalProxyHosts {
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target Portal context')]

@@ -1,5 +1,5 @@
 function Get-PortalSelf {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Portal configuration or "self"
     .DESCRIPTION
@@ -20,7 +20,7 @@ function Get-PortalSelf {
         Gets Portal "self" configuration
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     [Alias('Test-PortalToken')]
     Param(
