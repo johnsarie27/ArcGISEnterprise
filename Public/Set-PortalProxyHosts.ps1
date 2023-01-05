@@ -65,7 +65,7 @@ function Set-PortalProxyHosts {
         foreach ($mbr in $members) { $newConfig[$mbr.Name] = $mbr.Value }
 
         # ADD ALLOWED PROXY HOSTS
-        $newConfig.Add('allowedProxyHosts', ($ProxyHost -join ','))
+        $newConfig['allowedProxyHosts'] = ($ProxyHost -join ',')
 
         # SET REFERER
         $Referer = if ($PSBoundParameters.ContainsKey('Referer')) { $Referer } else { '{0}://{1}' -f $Context.Scheme, $Context.Authority }
