@@ -25,7 +25,8 @@ function Set-PortalProxyHosts {
     .NOTES
         Name:     Set-PortalProxyHosts
         Author:   Justin Johns
-        Version:  0.1.1 | Last Edit: 2023-01-04
+        Version:  0.1.2 | Last Edit: 2023-01-05
+        - 0.1.2 - Fixed minor issue with setting allowed origins
         - 0.1.1 - Fixed defect that removes several existing properties
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
