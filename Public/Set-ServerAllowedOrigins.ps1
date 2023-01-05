@@ -20,6 +20,12 @@ function Set-ServerAllowedOrigins {
         PS C:\> Set-ServerAllowedOrigins -Origin 'https://test.com', 'https://mySite.com'
         Sets ArcGIS Server allowed origins to 'https://test.com,https://mySite.com'
     .NOTES
+        Name:     Set-ServerAllowedOrigins
+        Author:   Justin Johns
+        Version:  0.1.1 | Last Edit: 2023-01-05
+        - 0.1.1 - Updates to account for all server properties
+        - 0.1.0 - Initial version
+        Comments: <Comment(s)>
         General notes
     ========================================================================= #>
     [CmdletBinding()]
@@ -48,23 +54,25 @@ function Set-ServerAllowedOrigins {
         $servDir = Get-ServerServicesDirectory @cmnParams
 
         # VALIDATE PREVIOUS CALL WAS SUCCESSFUL
+        if (-NOT $servDir) { Throw 'Unable to retrieve ArcGIS Server properties' }
+
+        # RETAIN PREVIOUS SETTINGS
+        $newConfig = @{}; $members = $servDir.psobject.Members.Where({ $_.MemberType -EQ 'NoteProperty' })
+        foreach ($mbr in $members) { $newConfig[$mbr.Name] = $mbr.Value }
+
+        # FOR SOME REASON THE PROPERTY 'servicesDirEnabled' IS STORED AS 'enabled' AS THE NAME
+        # BUT NEEDS TO BE DECLARED AS 'servicesDirEnabled' WHEN UPDATING
+        $newConfig['servicesDirEnabled'] = $servDir.enabled; $newConfig.Remove('enabled')
+
+        # ADD ALLOWED ORIGINS AND REQUEST PARAMS
+        $newConfig['allowedOrigins'] = ($Origin -join ',')
+        $newConfig['f'] = 'json'; $newConfig['token'] = $Token
 
         # SET NEW ORIGINS INTO PROPER FORMAT
         $restParams = @{
             Uri    = '{0}/admin/system/handlers/rest/servicesdirectory/edit' -f $Context
             Method = 'POST'
-            Body   = @{
-                f                     = 'json'
-                token                 = $Token
-                allowedOrigins        = ($Origin -join ',')
-                servicesDirEnabled    = $servDir.enabled
-                consoleLogging        = $servDir.consoleLogging
-                'jsapi.arcgis'        = $servDir.'jsapi.arcgis'
-                'jsapi.arcgis.sdk'    = $servDir.'jsapi.arcgis.sdk'
-                'jsapi.arcgis.css'    = $servDir.'jsapi.arcgis.css'
-                'arcgis.com.map.text' = $servDir.'arcgis.com.map.text'
-                'arcgis.com.map'      = $servDir.'arcgis.com.map'
-            }
+            Body   = $newConfig
         }
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
         Invoke-RestMethod @restParams
