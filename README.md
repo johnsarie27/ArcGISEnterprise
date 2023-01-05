@@ -7,7 +7,7 @@ ArcGIS Server and Portal for ArcGIS.
 
 ## Version 0.3.6
 
-- Fixed issue with Set-PortalProxyHosts that diguarded Portal federation settings
+- Fixed issue with Set-PortalProxyHosts that discarded Portal federation settings
 
 ### Version 0.3.5
 
