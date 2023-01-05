@@ -5,6 +5,10 @@ ArcGIS Server and Portal for ArcGIS.
 
 ## Updates
 
+## Version 0.3.7
+
+- Fixed issue with Set-ServerAllowedOrigins that may have removed future settings
+
 ## Version 0.3.6
 
 - Fixed issue with Set-PortalProxyHosts that discarded Portal federation settings
