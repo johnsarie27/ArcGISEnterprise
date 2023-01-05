@@ -5,6 +5,11 @@ ArcGIS Server and Portal for ArcGIS.
 
 ## Updates
 
+## Version 0.4.0
+
+- Added automated build framework
+- Fixed all validation issues
+
 ## Version 0.3.8
 
 - Fixed follow-up issue with Set-PortalProxyHosts

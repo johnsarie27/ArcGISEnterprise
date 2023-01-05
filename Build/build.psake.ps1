@@ -1,7 +1,5 @@
 # PSake makes variables declared here available in other scriptblocks
 Properties {
-    #$ProjectName = 'ArcGISEnterprise'
-    #$ProjectRoot = '/ArcGISEnterprise'
     $ProjectRoot = $env:BHProjectPath
     if (-not $ProjectRoot) {
         $ProjectRoot = $PSScriptRoot
@@ -47,17 +45,17 @@ Task 'Init' {
     "`n"
 }
 
-# Clean the Artifact and Staging folders
-Task 'Clean' -depends 'Init' {
+# Setup the Artifact and Staging folders
+Task 'Setup' -depends 'Init' {
     $lines
 
-    $foldersToClean = @(
+    $foldersToSetup = @(
         $ArtifactFolder
         $StagingFolder
     )
 
     # Remove folders
-    foreach ($folderPath in $foldersToClean) {
+    foreach ($folderPath in $foldersToSetup) {
         Remove-Item -Path $folderPath -Recurse -Force -ErrorAction 'SilentlyContinue'
         New-Item -Path $folderPath -ItemType 'Directory' -Force | Out-String | Write-Verbose
     }
@@ -65,7 +63,7 @@ Task 'Clean' -depends 'Init' {
 
 # Create a single .psm1 module file containing all functions
 # Copy new module and other supporting files (Documentation / Examples) to Staging folder
-Task 'CombineFunctionsAndStage' -depends 'Clean' {
+Task 'CombineFunctionsAndStage' -depends 'Setup' {
     $lines
 
     # Create folders
@@ -86,8 +84,8 @@ Task 'CombineFunctionsAndStage' -depends 'Clean' {
         Join-Path -Path $ProjectRoot -ChildPath 'Public'
         Join-Path -Path $ProjectRoot -ChildPath 'Documentation'
         Join-Path -Path $ProjectRoot -ChildPath 'README.md'
-        Join-Path -Path $ProjectRoot -ChildPath 'ArcGISEnterprise.psd1'
-        Join-Path -Path $ProjectRoot -ChildPath 'ArcGISEnterprise.psm1'
+        Join-Path -Path $ProjectRoot -ChildPath ($env:BHProjectName + '.psd1')
+        Join-Path -Path $ProjectRoot -ChildPath ($env:BHProjectName + '.psm1')
     )
     Copy-Item -Path $pathsToCopy -Destination $StagingModulePath -Recurse
 
@@ -191,6 +189,22 @@ Task 'UpdateDocumentation' -depends 'ImportStagingModule' {
 
 }
 
+# copy documentation markdown files from staging dir to production dir
+Task 'CopyDocumentation' -depends 'UpdateDocumentation' {
+    $lines
+
+    $ProductionDocumentatonPath = Join-Path -Path $ProjectRoot -ChildPath 'Documentation'
+    Write-Output "Copying Markdown help from Staging folder [$DocumentationPath] to Production folder [$ProductionDocumentatonPath]`n"
+
+    # cleanup
+    Remove-Item -Path $ProductionDocumentatonPath -Recurse -Force -ErrorAction 'SilentlyContinue'
+    Start-Sleep -Seconds 5
+    New-Item -Path $ProductionDocumentatonPath -ItemType 'Directory' | Out-Null
+
+    # copy
+    Copy-Item -Path $DocumentationPath/* -Destination $ProductionDocumentatonPath/ -Recurse
+}
+
 # Create a versioned zip file of all staged files
 # NOTE: Admin Rights are needed if you run this locally
 Task 'CreateBuildArtifact' -depends 'Init' {
@@ -221,4 +235,15 @@ Task 'CreateBuildArtifact' -depends 'Init' {
     }
 
     Write-Output "`nFINISHED: Release artifact creation."
+}
+
+# cleanup dirs and files when finished
+Task 'Cleanup' {
+    $lines
+
+    Write-Output 'Cleaning leftover/unneeded artifacts'
+
+    # cleanup
+    Remove-Item -Path $ArtifactFolder -Recurse -Force -ErrorAction 'SilentlyContinue'
+    Remove-Item -Path $StagingFolder -Recurse -Force -ErrorAction 'SilentlyContinue'
 }

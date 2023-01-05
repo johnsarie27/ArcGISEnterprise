@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param (
     [Parameter()]
-    [ValidateSet('Default', 'Init', 'Clean', 'CombineFunctionsAndStage', 'ImportStagingModule', 'Analyze', 'Test', 'UpdateDocumentation', 'CreateBuildArtifact')]
+    [ValidateSet('Default', 'Init', 'Setup', 'CombineFunctionsAndStage', 'ImportStagingModule', 'Analyze', 'Test', 'UpdateDocumentation', 'CopyDocumentation', 'CreateBuildArtifact', 'Cleanup')]
     [System.String[]]
     $TaskList = 'Default',
 

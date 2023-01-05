@@ -69,16 +69,20 @@ Follow these steps:
 ./Build/build.ps1 -ResolveDependency -TaskList Analyze # run psscriptanalyzer
 ```
 
-2. Ensure you have generated documentation for your function. The below command will generate a Staging folder in the root of the project with an exact copy of the repo, including generated documentation in markdown. You will need to manually copy your documentation out of the Staging folder and into the actual Documentation folder for the project.
+2. Ensure you have generated documentation for your function. The below command will generate a Staging folder in the root of the project with an exact copy of the repo, including generated documentation in markdown. It will then copy that generated documentation into the proper location ready to commit.
 
 ```pwsh
-./Build/build.ps1 -ResolveDependency -TaskList UpdateDocumentation # build documentation
+./Build/build.ps1 -ResolveDependency -TaskList CopyDocumentation # build documentation
 ```
 
-- :heavy_exclamation_mark: Do NOT commit the Staging or Artifacts directories as they are only for testing purposes. You can safely delete them when testing is complete.
+- :heavy_exclamation_mark: Do NOT commit the Staging or Artifacts directories as they are only for testing purposes. You can safely delete them when testing is complete with the following command.
+
+```pwsh
+./Build/build.ps1 -ResolveDependency -TaskList Cleanup
+```
 
 ## Release
 
-This project also includes the necessary tools to automate the release of the module via GitHub Actions. The file [pipeline.yml](.github/workflows/pipeline.yml) handles this task.
+This project also includes the necessary tools to automate the release of the module via GitHub Actions. The file [release.yml](.github/workflows/release.yml) handles this task.
 
-To create a new release of the module, create a new tag with the appropiate version and push it to GitHub. This will start the build process and publish a new version of the module to the repo.
+To create a new release of the module, first update the module manifest with the necessary version number and commit that to the main branch. Then, create a new tag with the same version number and push it to GitHub. This will start the build process and publish a new version of the module to the repo.
