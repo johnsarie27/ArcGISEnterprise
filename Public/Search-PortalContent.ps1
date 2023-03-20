@@ -30,9 +30,17 @@ function Search-PortalContent {
     #>
     [CmdletBinding()]
     Param(
+        [Parameter(Mandatory = $false, HelpMessage = 'Id')]
+        [ValidateNotNullOrEmpty()]
+        [System.String] $Id,
+
         [Parameter(Mandatory = $false, HelpMessage = 'Username')]
         [ValidateNotNullOrEmpty()]
         [System.String] $Username,
+
+        [Parameter(Mandatory = $false, HelpMessage = 'Title')]
+        [ValidateNotNullOrEmpty()]
+        [System.String] $Title,
 
         [Parameter(Mandatory = $false, HelpMessage = 'Tags')]
         [ValidateNotNullOrEmpty()]
@@ -66,22 +74,66 @@ function Search-PortalContent {
 
         # ADD SEARCH PARAMS
         switch ($PSBoundParameters.Keys) {
-            'Username' {
-                $restParams.Body['q'] = 'owner:"{0}"' -f $Username
+            'Id' {
+                $restParams.Body['q'] = 'id:"{0}"' -f $Id
                 $searchParams = 1
+            }
+            'Username' {
+                if ($searchParams) { $restParams.Body['q'] += ' AND username:"{0}"' -f $Username }
+                else { $restParams.Body['q'] = 'username:"{0}"' -f $Username }
+                $searchParams++
             }
             'Tags' {
                 if ($searchParams) { $restParams.Body['q'] += ' AND tags:"{0}"' -f $Tags }
-                else { $restParams.Body['q'] = 'tags:{0}' -f $Tags }
+                else { $restParams.Body['q'] = 'tags:"{0}"' -f $Tags }
+                $searchParams++
+            }
+            'Title' {
+                if ($searchParams) { $restParams.Body['q'] += ' AND title:"{0}"' -f $Title }
+                else { $restParams.Body['q'] = 'title:"{0}"' -f $Title }
+                $searchParams++
             }
         }
 
-        Write-Verbose -Message ($restParams.Body | Out-String)
+        # SHOW QUERY STRING
+        Write-Verbose -Message ('Query string: {0}' -f $restParams.Body.q)
 
         # ADD CERTIFICATE SKIP IF PROVIDED
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
 
         # SEND REQUEST
-        #Invoke-RestMethod @restParams
+        $rest = Invoke-RestMethod @restParams
+
+        # ADD USER TO ARRAY
+        foreach ($i in $rest.results) { $itemList.Add($i) | Out-Null }
+
+        # SET REMAINING ITEMS
+        $remainingItems = $rest.total - 100
+        Write-Verbose -Message ('Total Items: {0}' -f $rest.total)
+
+        # GET REMAINING USERS
+        if ($remainingItems -GT 0) {
+
+            do {
+
+                Write-Verbose -Message ('Remaining items: {0}' -f $remainingItems)
+
+                # RESET START
+                $restParams.Body['start'] = $rest.nextStart
+
+                # SEND REQUEST
+                $rest = Invoke-RestMethod @restParams
+
+                # ADD USER TO ARRAY
+                foreach ($i in $rest.results) { $itemList.Add($i) | Out-Null }
+
+                # DECREMENT REMAINING USERS
+                $remainingItems -= 100
+            }
+            while ($remainingItems -GT 0)
+        }
+
+        # RETURN USERS
+        $itemList
     }
 }
