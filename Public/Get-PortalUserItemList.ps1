@@ -22,7 +22,8 @@ function Get-PortalUserItemList {
     .NOTES
         Name:     Get-PortalUserItemList
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2023-13-20
+        Version:  0.1.1 | Last Edit: 2023-13-20
+        - 0.1.1 - Added automatic retrieval of paged results
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
@@ -46,19 +47,59 @@ function Get-PortalUserItemList {
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+
+        # CREATE USER ARRAY
+        $itemList = [System.Collections.Generic.List[System.Object]]::new()
     }
     Process {
         # SET PARAMETERS
         $restParams = @{
             Uri    = '{0}/sharing/rest/search' -f $Context
             Method = 'POST'
-            Body   = @{ f = 'json'; token = $Token; q = ('owner:{0}' -f $Username) }
+            Body   = @{
+                f     = 'json'
+                token = $Token
+                q     = 'owner:{0}' -f $Username
+                num   = 100
+            }
         }
 
         # ADD CERTIFICATE SKIP IF PROVIDED
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
 
         # SEND REQUEST
-        Invoke-RestMethod @restParams
+        $rest = Invoke-RestMethod @restParams
+
+        # ADD USER TO ARRAY
+        foreach ($i in $rest.results) { $itemList.Add($i) | Out-Null }
+
+        # SET REMAINING ITEMS
+        $remainingItems = $rest.total - 100
+        Write-Verbose -Message ('Total Items: {0}' -f $rest.total)
+
+        # GET REMAINING USERS
+        if ($remainingItems -GT 0) {
+
+            do {
+
+                Write-Verbose -Message ('Remaining items: {0}' -f $remainingItems)
+
+                # RESET START
+                $restParams.Body['start'] = $rest.nextStart
+
+                # SEND REQUEST
+                $rest = Invoke-RestMethod @restParams
+
+                # ADD USER TO ARRAY
+                foreach ($i in $rest.results) { $itemList.Add($i) | Out-Null }
+
+                # DECREMENT REMAINING USERS
+                $remainingItems -= 100
+            }
+            while ($remainingItems -GT 0)
+        }
+
+        # RETURN USERS
+        $itemList
     }
 }
