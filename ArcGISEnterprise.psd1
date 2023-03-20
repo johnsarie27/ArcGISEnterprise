@@ -86,7 +86,6 @@
         'Get-PortalToken'
         'Get-PortalUser'
         'Get-PortalUserGroup'
-        'Get-PortalUserItem'
         'Get-PortalUserItemList'
         'Get-PortalUserList'
         'Get-ServerAdminSetting'
