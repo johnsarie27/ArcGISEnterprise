@@ -4,8 +4,16 @@ function Search-PortalContent {
         Search Portal for ArcGIS content
     .DESCRIPTION
         Search Portal for ArcGIS content by user, item ID, etc.
-    .PARAMETER Username
-        Username
+    .PARAMETER Id
+        Id
+    .PARAMETER Owner
+        Owner
+    .PARAMETER Tags
+        Tags
+    .PARAMETER Type
+        Type
+    .PARAMETER Title
+        Title
     .PARAMETER Context
         Portal context (e.g., https://arcgis.com/arcgis)
     .PARAMETER Token
@@ -17,7 +25,7 @@ function Search-PortalContent {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> Search-PortalContent @commonParams -Username 'jsmith'
+        PS C:\> Search-PortalContent @commonParams -Owner 'jsmith'
         Get all Portal items belonging to 'jsmith'
     .NOTES
         Name:     Search-PortalContent
@@ -27,6 +35,8 @@ function Search-PortalContent {
         Comments: <Comment(s)>
         General notes
         https://developers.arcgis.com/rest/users-groups-and-items/search-reference.htm
+        This function does not yet support multiple search values for a given criterion
+        (e.g., can only search for a single "tag" not two tags)
     #>
     [CmdletBinding()]
     Param(
@@ -34,17 +44,21 @@ function Search-PortalContent {
         [ValidateNotNullOrEmpty()]
         [System.String] $Id,
 
-        [Parameter(Mandatory = $false, HelpMessage = 'Username')]
+        [Parameter(Mandatory = $false, HelpMessage = 'Owner')]
         [ValidateNotNullOrEmpty()]
-        [System.String] $Username,
-
-        [Parameter(Mandatory = $false, HelpMessage = 'Title')]
-        [ValidateNotNullOrEmpty()]
-        [System.String] $Title,
+        [System.String] $Owner,
 
         [Parameter(Mandatory = $false, HelpMessage = 'Tags')]
         [ValidateNotNullOrEmpty()]
         [System.String] $Tags,
+
+        [Parameter(Mandatory = $false, HelpMessage = 'Type')]
+        [ValidateNotNullOrEmpty()]
+        [System.String] $Type,
+
+        [Parameter(Mandatory = $false, HelpMessage = 'Title')]
+        [ValidateNotNullOrEmpty()]
+        [System.String] $Title,
 
         [Parameter(Mandatory = $true, HelpMessage = 'Target Portal context')]
         [ValidateScript({ $_.AbsoluteUri -match $context_regex })]
@@ -60,9 +74,8 @@ function Search-PortalContent {
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
-        Write-Verbose -Message $PSBoundParameters.GetType().FullName
-
-        Write-Verbose -Message ($PSBoundParameters | Out-String)
+        # CREATE USER ARRAY
+        $itemList = [System.Collections.Generic.List[System.Object]]::new()
     }
     Process {
         # SET PARAMETERS
@@ -78,14 +91,19 @@ function Search-PortalContent {
                 $restParams.Body['q'] = 'id:"{0}"' -f $Id
                 $searchParams = 1
             }
-            'Username' {
-                if ($searchParams) { $restParams.Body['q'] += ' AND username:"{0}"' -f $Username }
-                else { $restParams.Body['q'] = 'username:"{0}"' -f $Username }
+            'Owner' {
+                if ($searchParams) { $restParams.Body['q'] += ' AND owner:"{0}"' -f $Owner }
+                else { $restParams.Body['q'] = 'owner:"{0}"' -f $Owner }
                 $searchParams++
             }
             'Tags' {
                 if ($searchParams) { $restParams.Body['q'] += ' AND tags:"{0}"' -f $Tags }
                 else { $restParams.Body['q'] = 'tags:"{0}"' -f $Tags }
+                $searchParams++
+            }
+            'Type' {
+                if ($searchParams) { $restParams.Body['q'] += ' AND type:"{0}"' -f $Type }
+                else { $restParams.Body['q'] = 'type:"{0}"' -f $Type }
                 $searchParams++
             }
             'Title' {
@@ -96,7 +114,8 @@ function Search-PortalContent {
         }
 
         # SHOW QUERY STRING
-        Write-Verbose -Message ('Query string: {0}' -f $restParams.Body.q)
+        Write-Verbose -Message ('Query criteria in search: {0}' -f $searchParams)
+        Write-Verbose -Message ('Query string: [{0}]' -f $restParams.Body['q'])
 
         # ADD CERTIFICATE SKIP IF PROVIDED
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
