@@ -70,36 +70,43 @@ function Get-PortalUserItemList {
         # SEND REQUEST
         $rest = Invoke-RestMethod @restParams
 
-        # ADD USER TO ARRAY
-        foreach ($i in $rest.results) { $itemList.Add($i) | Out-Null }
-
-        # SET REMAINING ITEMS
-        $remainingItems = $rest.total - 100
-        Write-Verbose -Message ('Total Items: {0}' -f $rest.total)
-
-        # GET REMAINING USERS
-        if ($remainingItems -GT 0) {
-
-            do {
-
-                Write-Verbose -Message ('Remaining items: {0}' -f $remainingItems)
-
-                # RESET START
-                $restParams.Body['start'] = $rest.nextStart
-
-                # SEND REQUEST
-                $rest = Invoke-RestMethod @restParams
-
-                # ADD USER TO ARRAY
-                foreach ($i in $rest.results) { $itemList.Add($i) | Out-Null }
-
-                # DECREMENT REMAINING USERS
-                $remainingItems -= 100
-            }
-            while ($remainingItems -GT 0)
+        # CHECK FOR ERRORS
+        if ($rest.error) {
+            # RETURN ANY ERRORS
+            $rest
         }
+        else {
+            # ADD USER TO ARRAY
+            foreach ($i in $rest.results) { $itemList.Add($i) | Out-Null }
 
-        # RETURN USERS
-        $itemList
+            # SET REMAINING ITEMS
+            $remainingItems = $rest.total - 100
+            Write-Verbose -Message ('Total Items: {0}' -f $rest.total)
+
+            # GET REMAINING USERS
+            if ($remainingItems -GT 0) {
+
+                do {
+
+                    Write-Verbose -Message ('Remaining items: {0}' -f $remainingItems)
+
+                    # RESET START
+                    $restParams.Body['start'] = $rest.nextStart
+
+                    # SEND REQUEST
+                    $rest = Invoke-RestMethod @restParams
+
+                    # ADD USER TO ARRAY
+                    foreach ($i in $rest.results) { $itemList.Add($i) | Out-Null }
+
+                    # DECREMENT REMAINING USERS
+                    $remainingItems -= 100
+                }
+                while ($remainingItems -GT 0)
+            }
+
+            # RETURN USERS
+            $itemList
+        }
     }
 }

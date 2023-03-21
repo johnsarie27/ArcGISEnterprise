@@ -22,10 +22,12 @@ function Get-PortalGroupUserList {
     .NOTES
         Name:     Get-PortalGroupUserList
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2022-09-29
+        Version:  0.1.1 | Last Edit: 2023-03-20
+        - 0.1.1 - Added automatic retrieval of paginated data
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
+        https://developers.arcgis.com/rest/users-groups-and-items/group-users-list.htm
     #>
     [CmdletBinding()]
     Param(
@@ -46,19 +48,61 @@ function Get-PortalGroupUserList {
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+
+        # CREATE USER ARRAY
+        $userList = [System.Collections.Generic.List[System.Object]]::new()
     }
     Process {
         # SET PARAMETERS
         $restParams = @{
             Uri    = '{0}/sharing/rest/community/groups/{1}/userList' -f $Context, $GroupID
             Method = 'POST'
-            Body   = @{ f = 'json'; token = $Token }
+            Body   = @{ f = 'json'; token = $Token; num = 100 } # DEFAULT 25
         }
 
         # ADD CERTIFICATE SKIP IF PROVIDED
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
 
         # SEND REQUEST
-        Invoke-RestMethod @restParams
+        $rest = Invoke-RestMethod @restParams
+
+        # CHECK FOR ERRORS
+        if ($rest.error) {
+            # RETURN ANY ERRORS
+            $rest
+        }
+        else {
+            # ADD USER TO ARRAY
+            foreach ($u in $rest.users) { $userList.Add($u) | Out-Null }
+
+            # SET REMAINING USERS
+            $remainingUsers = $rest.total - 100
+            Write-Verbose -Message ('Total users: {0}' -f $rest.total)
+
+            # GET REMAINING USERS
+            if ($remainingUsers -GT 0) {
+
+                do {
+
+                    Write-Verbose -Message ('Remaining users: {0}' -f $remainingUsers)
+
+                    # RESET START
+                    $restParams.Body['start'] = $rest.nextStart
+
+                    # SEND REQUEST
+                    $rest = Invoke-RestMethod @restParams
+
+                    # ADD USER TO ARRAY
+                    foreach ($u in $rest.users) { $userList.Add($u) | Out-Null }
+
+                    # DECREMENT REMAINING USERS
+                    $remainingUsers -= 100
+                }
+                while ($remainingUsers -GT 0)
+            }
+
+            # RETURN USERS
+            $userList
+        }
     }
 }

@@ -3,7 +3,7 @@ function Get-PortalUserGroup {
     .SYNOPSIS
         Get Portal for ArcGIS user group
     .DESCRIPTION
-        Get groups owned by specified Portal for ArcGIS user
+        Get groups owned by specified user in Portal for ArcGIS
     .PARAMETER Username
         Username
     .PARAMETER Context
@@ -22,7 +22,8 @@ function Get-PortalUserGroup {
     .NOTES
         Name:     Get-PortalUserGroup
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2022-09-29
+        Version:  0.1.0 | Last Edit: 2023-03-20
+        - 0.1.1 - Added automatic retrieval of paginated data
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes:
@@ -46,19 +47,69 @@ function Get-PortalUserGroup {
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+
+        # CREATE USER ARRAY
+        $groupList = [System.Collections.Generic.List[System.Object]]::new()
     }
     Process {
         # SET PARAMETERS
         $restParams = @{
             Uri    = '{0}/sharing/rest/community/groups' -f $Context
             Method = 'POST'
-            Body   = @{ f = 'json'; token = $Token; q = $Username }
+            Body   = @{
+                f     = 'json'
+                token = $Token
+                num   = 100
+                # THE SYNTAX 'q = "jsmith"' WILL FIND THE USER ACROSS MULTIPLE
+                # FIELDS RATHER THAN JUST THE OWNER FIELD. USE Search-PortalContent
+                # TO FIND A USERNAME AS A SEARCH TERM FOR MULTIPLE FIELDS
+                q     = 'owner:"{0}"' -f $Username
+            }
         }
 
         # ADD CERTIFICATE SKIP IF PROVIDED
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
 
         # SEND REQUEST
-        Invoke-RestMethod @restParams
+        $rest = Invoke-RestMethod @restParams
+
+        # CHECK FOR ERRORS
+        if ($rest.error) {
+            # RETURN ANY ERRORS
+            $rest
+        }
+        else {
+            # ADD USER TO ARRAY
+            foreach ($g in $rest.results) { $groupList.Add($g) | Out-Null }
+
+            # SET REMAINING USERS
+            $remainingGroups = $rest.total - 100
+            Write-Verbose -Message ('Total groups: {0}' -f $rest.total)
+
+            # GET REMAINING USERS
+            if ($remainingGroups -GT 0) {
+
+                do {
+
+                    Write-Verbose -Message ('Remaining groups: {0}' -f $remainingGroups)
+
+                    # RESET START
+                    $restParams.Body['start'] = $rest.nextStart
+
+                    # SEND REQUEST
+                    $rest = Invoke-RestMethod @restParams
+
+                    # ADD USER TO ARRAY
+                    foreach ($g in $rest.results) { $groupList.Add($g) | Out-Null }
+
+                    # DECREMENT REMAINING USERS
+                    $remainingGroups -= 100
+                }
+                while ($remainingGroups -GT 0)
+            }
+
+            # RETURN USERS
+            $groupList
+        }
     }
 }
