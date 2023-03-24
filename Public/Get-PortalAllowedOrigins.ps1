@@ -19,7 +19,9 @@ function Get-PortalAllowedOrigins {
     .NOTES
         Name:     Get-PortalAllowedOrigins
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2022-04-27
+        Version:  0.1.1 | Last Edit: 2023-03-23
+        - 0.1.1 - Added validation for no allowed origins
+        - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
     #>
@@ -40,17 +42,12 @@ function Get-PortalAllowedOrigins {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
     }
     Process {
-        <# $restParams = @{
-            Uri    = '{0}/sharing/rest/portals/self' -f $Context
-            Method = 'POST'
-            Body   = @{
-                f     = 'json'
-                token = $Token
-            }
-        }
-        if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
-        (Invoke-RestMethod @restParams).allowedOrigins #>
+        # ((Get-PortalSelf @PSBoundParameters).allowedOrigins).Split(',')
 
-        ((Get-PortalSelf @PSBoundParameters).allowedOrigins).Split(',')
+        # GET ALLOWED ORIGINS
+        $origins = (Get-PortalSelf @PSBoundParameters).allowedOrigins
+
+        # RETURN ORIGINS OR NULL
+        if ($origins.Count -EQ 0) { $null } else { $origins.Split(',') }
     }
 }
