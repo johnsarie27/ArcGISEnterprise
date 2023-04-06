@@ -1,5 +1,5 @@
 function Clear-PortalHostedFeatureService {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Clear Portal Hosted Feature Service
     .DESCRIPTION
@@ -28,7 +28,7 @@ function Clear-PortalHostedFeatureService {
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(
         [Parameter(Mandatory = $true, HelpMessage = 'Portal Hosted Feature Service Name')]
