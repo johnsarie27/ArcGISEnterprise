@@ -22,7 +22,8 @@ function Set-ServerAllowedOrigins {
     .NOTES
         Name:     Set-ServerAllowedOrigins
         Author:   Justin Johns
-        Version:  0.1.1 | Last Edit: 2023-01-05
+        Version:  0.1.2 | Last Edit: 2023-04-06
+        - 0.1.2 - Add validation to Origin parameter
         - 0.1.1 - Updates to account for all server properties
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
@@ -35,7 +36,7 @@ function Set-ServerAllowedOrigins {
         [System.Uri] $Context,
 
         [Parameter(Mandatory, HelpMessage = 'Origin to be allowed')]
-        [ValidateNotNullOrEmpty()]
+        [ValidatePattern('^https?://.+[^/]$')]
         [System.Uri[]] $Origin,
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]

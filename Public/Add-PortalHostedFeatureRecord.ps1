@@ -1,5 +1,5 @@
 function Add-PortalHostedFeatureRecord {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Add record to Portal Hosted Feature Service
     .DESCRIPTION
@@ -30,7 +30,7 @@ function Add-PortalHostedFeatureRecord {
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory = $true, HelpMessage = 'Record or feature to add')]
