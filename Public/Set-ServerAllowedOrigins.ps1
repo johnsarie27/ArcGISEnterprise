@@ -36,7 +36,7 @@ function Set-ServerAllowedOrigins {
         [System.Uri] $Context,
 
         [Parameter(Mandatory, HelpMessage = 'Origin to be allowed')]
-        [ValidatePattern('^.+[^/]$')]
+        [ValidatePattern('^https?://.+[^/]$')]
         [System.Uri[]] $Origin,
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
