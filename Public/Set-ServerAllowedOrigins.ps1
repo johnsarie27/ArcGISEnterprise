@@ -22,7 +22,8 @@ function Set-ServerAllowedOrigins {
     .NOTES
         Name:     Set-ServerAllowedOrigins
         Author:   Justin Johns
-        Version:  0.1.2 | Last Edit: 2023-04-06
+        Version:  0.1.3 | Last Edit: 2023-04-26
+        - 0.1.3 - Fixed issue with [System.Uri] adding trailing slash to Origin parameter
         - 0.1.2 - Add validation to Origin parameter
         - 0.1.1 - Updates to account for all server properties
         - 0.1.0 - Initial version
@@ -37,7 +38,7 @@ function Set-ServerAllowedOrigins {
 
         [Parameter(Mandatory, HelpMessage = 'Origin to be allowed')]
         [ValidatePattern('^https?://.+[^/]$')]
-        [System.Uri[]] $Origin,
+        [System.String[]] $Origin,
 
         [Parameter(Mandatory, HelpMessage = 'Portal token')]
         [ValidateScript({ $_ -match $token_regex })]
