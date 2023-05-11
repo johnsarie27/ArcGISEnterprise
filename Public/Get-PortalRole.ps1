@@ -22,7 +22,8 @@ function Get-PortalRole {
     .NOTES
         Name:     Get-PortalRole
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2022-07-19
+        Version:  0.1.1 | Last Edit: 2023-05-11
+        - 0.1.1 - Makes multiple requests to get all roles if more than 50
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
@@ -47,6 +48,9 @@ function Get-PortalRole {
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+
+        # CREATE ROLE ARRAY
+        $roleList = [System.Collections.Generic.List[System.Object]]::new()
     }
     Process {
         # SET QUERY PARAMETERS
@@ -56,13 +60,53 @@ function Get-PortalRole {
             Body   = @{
                 f     = 'json'
                 token = $Token
+                num = 50
             }
         }
 
         # ADD SKIP CERTIFICATE CHECK IF PROVIDED
         if ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) { $restParams['SkipCertificateCheck'] = $true }
 
-        # INVOKE QUERY
-        Invoke-RestMethod @restParams
+        # SEND REQUEST
+        $rest = Invoke-RestMethod @restParams
+
+        # CHECK FOR ERRORS
+        if ($rest.error) {
+            # RETURN ANY ERRORS
+            $rest
+        }
+        else {
+            # ADD ROLE TO ARRAY
+            foreach ($r in $rest.roles) { $roleList.Add($r) | Out-Null }
+
+            # SET REMAINING ROLES
+            $remainingRoles = $rest.total - 50
+            Write-Verbose -Message ('Total roles: {0}' -f $rest.total)
+
+            # GET REMAINING ROLES
+            if ($remainingRoles -GT 0) {
+
+                do {
+
+                    Write-Verbose -Message ('Remaining roles: {0}' -f $remainingRoles)
+
+                    # RESET START
+                    $restParams.Body['start'] = $rest.nextStart
+
+                    # SEND REQUEST
+                    $rest = Invoke-RestMethod @restParams
+
+                    # ADD ROLES TO ARRAY
+                    foreach ($r in $rest.roles) { $roleList.Add($r) | Out-Null }
+
+                    # DECREMENT REMAINING ROLES
+                    $remainingRoles -= 50
+                }
+                while ($remainingRoles -GT 0)
+            }
+
+            # RETURN ROLES
+            $roleList
+        }
     }
 }
