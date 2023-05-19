@@ -21,7 +21,8 @@ function Get-ServerAllowedOrigins {
     .NOTES
         Name:     Get-ServerAllowedOrigins
         Author:   Justin Johns
-        Version:  0.1.1 | Last Edit: 2023-05-10 [0.1.1]
+        Version:  0.1.2 | Last Edit: 2023-05-19 [0.1.2]
+        - 0.1.2 - Updated code to account for no allowed origins set
         - 0.1.1 - Added switch parameter for SOAP
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
@@ -57,7 +58,8 @@ function Get-ServerAllowedOrigins {
             (Invoke-RestMethod @restParams).allowedOrigins.Split(',')
         }
         else {
-            ((Get-ServerServicesDirectory @PSBoundParameters).allowedOrigins).Split(',')
+            $origins = (Get-ServerServicesDirectory @PSBoundParameters).allowedOrigins
+            if ($origins.Count -EQ 0) { $null } else { $origins.Split(',') }
         }
     }
 }
