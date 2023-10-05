@@ -43,8 +43,8 @@ function Set-PortalUserPassword {
         # GET USER FROM PROVIDED CREDENTIAL
         $status = Get-PortalUser -Context $Context -Username $username -Token $token.token
 
-        # VALIDATE USER EXISTENCE USING ROLE PROPERTY
-        if ($status.role) {
+        # VALIDATE USER EXISTENCE USING ID PROPERTY
+        if ($status.id) {
             # CHANGE PASSWORD
             $restParams = @{
                 Uri    = '{0}/sharing/rest/community/users/{1}/update' -f $Context, $username

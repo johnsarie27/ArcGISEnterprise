@@ -43,7 +43,8 @@ function Set-ServerPSAPassword {
         # CHECK USER STATUS
         $status = Get-ServerPSA -Context $Context -Token $token.token
 
-        # VALIDATE ACCOUNT BY DISABLED PROPERTY
+        # VALIDATE USER EXISTENCE USING DISABLED PROPERTY
+        # THIS IS THE ONLY PROPERTY RETURNED BY "Get-ServerPSA"
         if ($status.disabled -eq $false) {
             # CHANGE PASSWORD
             $restParams = @{
