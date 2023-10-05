@@ -58,7 +58,7 @@ function Update-PortalPSA {
             $rotate = Invoke-RestMethod @restParams
 
             if ($true -eq $rotate.success) {
-                [pscustomobject] @{ Success = $true }
+                $rotate
             }
             else {
                 $details = $rotate.error.details | Out-String
@@ -67,7 +67,7 @@ function Update-PortalPSA {
             }
         }
         else {
-            Throw ('Error retrieving user for app [{0}]' -f $Context)
+            Throw ('Error validating user "{0}" in Portal for ArcGIS "{1}"' -f $username, $Context)
         }
     }
 }
