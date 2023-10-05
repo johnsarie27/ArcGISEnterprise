@@ -1,9 +1,9 @@
 function Set-PortalUserPassword {
     <#
     .SYNOPSIS
-        Update Portal for ArcGIS PSA Account
+        Set Portal for ArcGIS PSA Account
     .DESCRIPTION
-        Update Portal for ArcGIS PSA Account
+        Set Portal for ArcGIS PSA Account
     .PARAMETER Context
         Portal context (e.g., https://arcgis.com/arcgis)
     .PARAMETER Credential
@@ -67,7 +67,7 @@ function Set-PortalUserPassword {
             }
         }
         else {
-            Throw ('Error validating user "{0}" in Portal for ArcGIS "{1}"' -f $username, $Context)
+            Throw ('Error validating user "{0}" in Portal for ArcGIS: "{1}"' -f $username, $Context)
         }
     }
 }
