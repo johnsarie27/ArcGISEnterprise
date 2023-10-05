@@ -37,10 +37,14 @@ function Update-PortalPSA {
         # GET TOKEN
         $token = Get-PortalToken -Context $Context -Credential $Credential
 
+        # GET USERNAME FROM CREDENTIAL
         $username = $Credential.GetNetworkCredential().UserName
+
+        # GET USER FROM PROVIDED CREDENTIAL
         $status = Get-PortalUser -Context $Context -Username $username -Token $token.token
 
-        if ( $status.role -eq 'org_admin' ) {
+        # VALIDATE USER EXISTENCE USING ROLE PROPERTY
+        if ($status.role) {
             # CHANGE PASSWORD
             $restParams = @{
                 Uri    = '{0}/sharing/rest/community/users/{1}/update' -f $Context, $username
@@ -53,7 +57,7 @@ function Update-PortalPSA {
             }
             $rotate = Invoke-RestMethod @restParams
 
-            if ( $rotate.success -eq $true ) {
+            if ($true -eq $rotate.success) {
                 [pscustomobject] @{ Success = $true }
             }
             else {
