@@ -57,6 +57,7 @@ function Set-PortalUserPassword {
             }
             $rotate = Invoke-RestMethod @restParams
 
+            # VALIDATE ROTATION SUCCESS
             if ($true -eq $rotate.success) {
                 $rotate
             }
