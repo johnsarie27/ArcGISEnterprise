@@ -19,4 +19,4 @@ New-Variable -Name 'token_regex' -Option Constant -Value '^[\w\.=-]+$'
 # THESE ARE SPECIFIED IN THE MODULE MANIFEST AND THEREFORE DON'T NEED TO BE LISTED HERE
 #Export-ModuleMember -Function *
 #Export-ModuleMember -Variable *
-Export-ModuleMember -Alias *
+#Export-ModuleMember -Alias *
