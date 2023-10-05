@@ -9,7 +9,7 @@
     RootModule        = 'ArcGISEnterprise.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.4.10'
+    ModuleVersion     = '0.4.11'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -124,6 +124,7 @@
         'Get-AGSService'
         'Get-SecurityPolicy'
         'Test-PortalToken'
+        'Update-PortalPSA'
     )
 
     # DSC resources to export from this module
