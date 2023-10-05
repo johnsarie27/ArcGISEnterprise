@@ -105,11 +105,11 @@
         'Set-PortalAllowedOrigins'
         'Set-PortalProxyHosts'
         'Set-PortalRolePrivilege'
+        'Set-PortalUserPassword'
         'Set-ServerAllowedOrigins'
         'Test-PortalFederation'
         'Test-PortalHealth'
         'Test-ServerHealth'
-        'Update-PortalPSA'
         'Update-ServerPSA'
     )
 
