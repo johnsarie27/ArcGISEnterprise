@@ -43,7 +43,7 @@ function Update-ServerPSA {
         # CHECK USER STATUS
         $status = Get-ServerPSA -Context $Context -Token $token.token
 
-        if ( $status.disabled -eq $false ) {
+        if ($status.disabled -eq $false) {
             # CHANGE PASSWORD
             $restParams = @{
                 Uri     = '{0}/admin/security/psa/update' -f $Context
@@ -58,11 +58,11 @@ function Update-ServerPSA {
             }
             $rotate = Invoke-RestMethod @restParams
 
-            if ( $rotate.status -eq 'success' ) { [pscustomobject] @{ Success = $true } }
-            else { Throw ('Error updating user password for app [{0}]' -f $Context) }
+            if ($rotate.status -eq 'success') { $rotate }
+            else { Throw ('Error updating PSA password for web application "{0}"' -f $Context) }
         }
         else {
-            Throw ('Error retrieving user for app [{0}]' -f $Context)
+            Throw ('Error retrieving user for web application "{0}"' -f $Context)
         }
     }
 }
