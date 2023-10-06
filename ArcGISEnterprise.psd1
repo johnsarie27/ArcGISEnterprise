@@ -9,7 +9,7 @@
     RootModule        = 'ArcGISEnterprise.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.4.10'
+    ModuleVersion     = '0.4.11'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -105,12 +105,12 @@
         'Set-PortalAllowedOrigins'
         'Set-PortalProxyHosts'
         'Set-PortalRolePrivilege'
+        'Set-PortalUserPassword'
         'Set-ServerAllowedOrigins'
+        'Set-ServerPSAPassword'
         'Test-PortalFederation'
         'Test-PortalHealth'
         'Test-ServerHealth'
-        'Update-PortalPSA'
-        'Update-ServerPSA'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
@@ -124,6 +124,8 @@
         'Get-AGSService'
         'Get-SecurityPolicy'
         'Test-PortalToken'
+        'Update-PortalPSA'
+        'Update-ServerPSA'
     )
 
     # DSC resources to export from this module
